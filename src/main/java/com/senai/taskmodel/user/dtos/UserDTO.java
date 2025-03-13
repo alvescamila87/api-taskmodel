@@ -9,9 +9,9 @@ import lombok.Setter;
 @Setter
 public class UserDTO {
 
-    @NotBlank
+    @NotBlank(message = "The name cannot be null")
     private String name;
 
-    @Email
+    @Email(message = "The email provided is not valid")
     private String email;
 }

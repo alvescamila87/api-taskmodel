@@ -1,10 +1,13 @@
 package com.senai.taskmodel.task.dtos;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.senai.taskmodel.task.enums.StatusENUM;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -15,13 +18,20 @@ public class TaskDTO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "The title cannot be null")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "The description cannot be null")
     private String description;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @NotNull(message = "The date task cannot be null")
+    @DateTimeFormat(pattern = "dd/mm/yyyy")
     private Date dateTask;
+
+    private StatusENUM statusENUM;
+
+    @NotBlank(message = "The user email cannot be null")
+    @Email(message = "The email provided is not valid")
+    private String userEmail;
 
 }
