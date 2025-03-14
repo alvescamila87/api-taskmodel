@@ -79,11 +79,11 @@ The application will be available at: [http://localhost:8080](http://localhost:8
 ---
 
 Project developed for educational purposes at SENAI, focusing on hands-on learning of Java Spring Boot and relational databases. 🎓
+
 Let me know if you want me to refine anything or add more details! 🚀
 
 ---
 
-👩‍💻 Author
 ## 👩‍💻 Developer author
 * Camila Alves: [GitHub](https://github.com/alvescamila87)
 
