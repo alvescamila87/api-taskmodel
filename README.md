@@ -34,13 +34,13 @@ It aims to create an application to manage tasks using **Java Spring Boot** e **
 │   │   │           │   ├── entities
 │   │   │           │   ├── repositories
 │   │   │           │   └── services
+│   │   │           │   └── enums
 │   │   │           └── user
 │   │   │               ├── controllers
 │   │   │               ├── dtos
 │   │   │               ├── entities
 │   │   │               ├── repositories
 │   │   │               └── services
-│   │   │               └── enums
 │   │   └── resources
 │   │       └── application.properties
 │   │       └── application-dev.properties
@@ -50,6 +50,9 @@ It aims to create an application to manage tasks using **Java Spring Boot** e **
 ## ⚙️ Database configuration
 Configure the **application.properties** file with your MariaDB credentials:
 
+```properties 
+spring.profiles.active=prod
+```
 ```properties
 spring.datasource.url=jdbc:mariadb://localhost:3306/taskmodel_db_v1
 spring.datasource.username=your_user

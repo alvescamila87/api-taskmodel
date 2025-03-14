@@ -2,7 +2,9 @@ package com.senai.taskmodel.user.controllers;
 
 import com.senai.taskmodel.user.dtos.UserDTO;
 
+import com.senai.taskmodel.user.services.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,9 +15,12 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
 
+    @Autowired
+    UserService service;
+
     @GetMapping
     public ResponseEntity<List<UserDTO>> listAllUsers() {
-        List<UserDTO> listUsers = new ArrayList<>();
+        List<UserDTO> listUsers = service.findAllUsers();
 
         return ResponseEntity.ok().body(listUsers);
     }
