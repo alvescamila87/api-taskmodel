@@ -86,4 +86,14 @@ public class TaskService {
 
         return taskDTO;
     }
+
+    public void deleteTask(Long id) {
+        Optional<TaskEntity> taskEntityId = repository.findById(id);
+
+        if(taskEntityId.isEmpty()) {
+            return;
+        }
+
+        repository.deleteById(id);
+    }
 }

@@ -19,28 +19,23 @@ public class TaskController {
     @GetMapping
     public ResponseEntity<List<TaskDTO>> listAllTasks() {
         List<TaskDTO> listAllTasksDTO = service.findAllTasks();
-
         return ResponseEntity.ok().body(listAllTasksDTO);
     }
 
     @PostMapping ResponseEntity<TaskDTO> createTask(@RequestBody @Valid TaskDTO taskDTO) {
         TaskDTO newTask = service.createTask(taskDTO);
-
         return ResponseEntity.ok().body(newTask);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TaskDTO> updateTask(@PathVariable Long id, @RequestBody @Valid TaskDTO taskDTO){
         TaskDTO updateTask = service.updateTask(id, taskDTO);
-
-
         return ResponseEntity.ok().body(updateTask);
     }
 
-    @DeleteMapping("/id")
-    public ResponseEntity<TaskDTO> deleteTask(@PathVariable Long id) {
-        TaskDTO deleteTask = new TaskDTO();
-
-        return ResponseEntity.ok().body(deleteTask);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+        service.deleteTask(id);
+        return ResponseEntity.noContent().build();
     }
 }

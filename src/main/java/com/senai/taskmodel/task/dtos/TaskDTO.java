@@ -34,7 +34,5 @@ public class TaskDTO {
 
     @NotBlank(message = "The user email cannot be null")
     @Email(message = "The email provided is not valid")
-    @JsonProperty(value = "user")
     private String userEmail;
-
 }
