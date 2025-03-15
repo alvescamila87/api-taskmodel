@@ -14,9 +14,11 @@ import java.util.List;
 @Setter
 public class ResponseUserDTO {
 
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     @NotBlank(message = "The name cannot be null")
     private String name;
 
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     @Email(message = "The email provided is not valid")
     private String email;
 

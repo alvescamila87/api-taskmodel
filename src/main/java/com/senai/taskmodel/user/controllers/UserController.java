@@ -26,17 +26,21 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<ResponseUserDTO> createUser(@RequestBody @Valid UserDTO userDTO) {
-        ResponseUserDTO responseUserDTO = service.createUser(userDTO);
+        ResponseUserDTO newUser = service.createUser(userDTO);
 
-        if(!responseUserDTO.getSuccess()) {
-            return ResponseEntity.status(409).body(responseUserDTO);
+        if(!newUser.getSuccess()) {
+            return ResponseEntity.status(409).body(newUser);
         }
-        return ResponseEntity.status(201).body(responseUserDTO);
+        return ResponseEntity.status(201).body(newUser);
     }
 
     @PutMapping("/{email}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable String email, @RequestBody @Valid UserDTO userDTO) {
-        UserDTO updateUser = service.updateUser(email, userDTO);
+    public ResponseEntity<ResponseUserDTO> updateUser(@PathVariable String email, @RequestBody @Valid UserDTO userDTO) {
+        ResponseUserDTO updateUser = service.updateUser(email, userDTO);
+
+        if(!updateUser.getSuccess()) {
+            return ResponseEntity.status(404).body(updateUser);
+        }
         return ResponseEntity.ok().body(updateUser);
     }
 

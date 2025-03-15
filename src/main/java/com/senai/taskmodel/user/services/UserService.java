@@ -64,11 +64,15 @@ public class UserService {
         return userEntityEmail.isPresent();
     }
 
-    public UserDTO updateUser(String email, UserDTO userDTO){
+    public ResponseUserDTO updateUser(String email, UserDTO userDTO){
+        ResponseUserDTO responseUserDTO = new ResponseUserDTO();
+
         Optional<UserEntity> userEntityEmail = repository.findByEmail(email);
 
         if(userEntityEmail.isEmpty()) {
-            return null;
+            responseUserDTO.setMessage("User not found");
+            responseUserDTO.setSuccess(false);
+            return responseUserDTO;
         }
 
         UserEntity updateUserEntity = userEntityEmail.get();
@@ -77,7 +81,10 @@ public class UserService {
 
         repository.save(updateUserEntity);
 
-        return userDTO;
+        responseUserDTO.setMessage("User has been successfully updated");
+        responseUserDTO.setSuccess(false);
+
+        return responseUserDTO;
     }
 
     public void deleteUser(String email) {
