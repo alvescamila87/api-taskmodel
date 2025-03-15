@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -45,6 +46,34 @@ public class UserService {
         repository.save(newUserEntity);
 
         return userDTO;
+    }
+
+    public UserDTO updateUser(String email, UserDTO userDTO){
+        Optional<UserEntity> userEntityEmail = repository.findByEmail(email);
+
+        if(userEntityEmail.isEmpty()) {
+            return null;
+        }
+
+        UserEntity updateUserEntity = userEntityEmail.get();
+        updateUserEntity.setName(userDTO.getName());
+        updateUserEntity.setEmail(userDTO.getEmail());
+
+        repository.save(updateUserEntity);
+
+        return userDTO;
+    }
+
+    public void deleteUser(String email) {
+        Optional<UserEntity> deleteUser = repository.findByEmail(email);
+
+        if(deleteUser.isEmpty()) {
+            return;
+        }
+
+        UserEntity deleteUserEntity = deleteUser.get();
+
+        repository.delete(deleteUserEntity);
     }
 
 }

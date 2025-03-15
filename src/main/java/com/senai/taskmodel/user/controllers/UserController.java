@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,15 +33,15 @@ public class UserController {
 
     @PutMapping("/{email}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable String email, @RequestBody @Valid UserDTO userDTO) {
-        UserDTO updateUser = new UserDTO();
+        UserDTO updateUser = service.updateUser(email, userDTO);
 
         return ResponseEntity.ok().body(updateUser);
     }
 
     @DeleteMapping("/{email}")
-    public ResponseEntity<UserDTO> deleteUser(@PathVariable String email) {
-        UserDTO deleteUser = new UserDTO();
+    public ResponseEntity<Void> deleteUser(@PathVariable String email) {
+        service.deleteUser(email);
 
-        return ResponseEntity.status(204).body(deleteUser);
+        return ResponseEntity.noContent().build();
     }
 }
