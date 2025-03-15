@@ -1,5 +1,6 @@
 package com.senai.taskmodel.user.controllers;
 
+import com.senai.taskmodel.user.dtos.ResponseUserDTO;
 import com.senai.taskmodel.user.dtos.UserDTO;
 
 import com.senai.taskmodel.user.services.UserService;
@@ -24,9 +25,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestBody @Valid UserDTO userDTO) {
-        UserDTO newUser = service.createUser(userDTO);
-        return ResponseEntity.ok().body(newUser);
+    public ResponseEntity<ResponseUserDTO> createUser(@RequestBody @Valid UserDTO userDTO) {
+        ResponseUserDTO responseUserDTO = service.createUser(userDTO);
+
+        if(!responseUserDTO.getSuccess()) {
+            return ResponseEntity.status(409).body(responseUserDTO);
+        }
+        return ResponseEntity.status(201).body(responseUserDTO);
     }
 
     @PutMapping("/{email}")

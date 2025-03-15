@@ -34,4 +34,7 @@ public class TaskDTO {
     @NotBlank(message = "The user email cannot be null")
     @Email(message = "The email provided is not valid")
     private String userEmail;
+
+    private String mensagem;
+    private Boolean sucesso;
 }

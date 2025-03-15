@@ -1,10 +1,14 @@
 package com.senai.taskmodel.user.entities;
 
+import com.senai.taskmodel.task.entities.TaskEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_user")
@@ -23,4 +27,7 @@ public class UserEntity {
 
     @Column(name = "email", unique = true, nullable = false)
     private String email;
+
+    @OneToMany(mappedBy = "user")
+    private List<TaskEntity> taskList = new ArrayList<>();
 }

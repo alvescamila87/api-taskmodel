@@ -1,5 +1,6 @@
 package com.senai.taskmodel.user.services;
 
+import com.senai.taskmodel.user.dtos.ResponseUserDTO;
 import com.senai.taskmodel.user.dtos.UserDTO;
 import com.senai.taskmodel.user.entities.UserEntity;
 import com.senai.taskmodel.user.repositories.UserRepository;
@@ -33,19 +34,34 @@ public class UserService {
         return listUsers;
     }
 
-    public UserDTO createUser(UserDTO userDTO) {
-        //UserDTO newUserDTO = new UserDTO();
+        public ResponseUserDTO createUser(UserDTO userDTO) {
+        ResponseUserDTO responseUserDTO = new ResponseUserDTO();
+
         UserEntity newUserEntity = new UserEntity();
+
+        if(isUserAlreadyExists(userDTO)) {
+            responseUserDTO.setMessage("The email is already in use.");
+            responseUserDTO.setSuccess(false);
+            return responseUserDTO;
+        }
 
         newUserEntity.setName(userDTO.getName());
         newUserEntity.setEmail(userDTO.getEmail());
 
-        //newUserDTO.setName(userDTO.getName());
-        //newUserDTO.setEmail(userDTO.getEmail());
-
         repository.save(newUserEntity);
 
-        return userDTO;
+        responseUserDTO.setName(userDTO.getName());
+        responseUserDTO.setEmail(userDTO.getEmail());
+        responseUserDTO.setSuccess(true);
+        responseUserDTO.setMessage("User has been successfully registered.");
+
+        return responseUserDTO;
+    }
+
+    private Boolean isUserAlreadyExists(UserDTO userDTO) {
+        Optional<UserEntity> userEntityEmail = repository.findByEmail(userDTO.getEmail());
+
+        return userEntityEmail.isPresent();
     }
 
     public UserDTO updateUser(String email, UserDTO userDTO){
