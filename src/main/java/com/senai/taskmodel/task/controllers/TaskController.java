@@ -24,14 +24,14 @@ public class TaskController {
     }
 
     @PostMapping ResponseEntity<TaskDTO> createTask(@RequestBody @Valid TaskDTO taskDTO) {
-        TaskDTO newTask = new TaskDTO();
+        TaskDTO newTask = service.createTask(taskDTO);
 
         return ResponseEntity.ok().body(newTask);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TaskDTO> updateTask(@PathVariable Long id, @RequestBody @Valid TaskDTO taskDTO){
-        TaskDTO updateTask = new TaskDTO();
+        TaskDTO updateTask = service.updateTask(id, taskDTO);
 
 
         return ResponseEntity.ok().body(updateTask);
