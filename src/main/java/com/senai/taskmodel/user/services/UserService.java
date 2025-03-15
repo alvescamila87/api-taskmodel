@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Service
 public class UserService {
 
@@ -20,14 +21,30 @@ public class UserService {
 
         List<UserEntity> listUserEntity = repository.findAll();
 
-        for(UserEntity user : listUserEntity) {
-            UserDTO dto = new UserDTO();
-            dto.setEmail(user.getEmail());
-            dto.setName(user.getName());
+        for(UserEntity userEntity : listUserEntity) {
+            UserDTO userDTO = new UserDTO();
+            userDTO.setName(userEntity.getName());
+            userDTO.setEmail(userEntity.getEmail());
 
-            listUsers.add(dto);
+            listUsers.add(userDTO);
         }
 
         return listUsers;
     }
+
+    public UserDTO createUser(UserDTO userDTO) {
+        //UserDTO newUserDTO = new UserDTO();
+        UserEntity newUserEntity = new UserEntity();
+
+        newUserEntity.setName(userDTO.getName());
+        newUserEntity.setEmail(userDTO.getEmail());
+
+        //newUserDTO.setName(userDTO.getName());
+        //newUserDTO.setEmail(userDTO.getEmail());
+
+        repository.save(newUserEntity);
+
+        return userDTO;
+    }
+
 }
