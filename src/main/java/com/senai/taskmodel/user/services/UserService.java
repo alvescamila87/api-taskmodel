@@ -98,9 +98,9 @@ public class UserService {
             return responseUserDTO;
         }
 
-        if(!deleteUser.get().getTaskList().isEmpty()) {
+        if(hasTasksRelated(email)) {
+            responseUserDTO.setMessage("User cannot be removed bescause he has tasks related");
             responseUserDTO.setSuccess(false);
-            responseUserDTO.setMessage("User cannot be removed because he has tasks related");
             return responseUserDTO;
         }
 
@@ -110,6 +110,15 @@ public class UserService {
         responseUserDTO.setMessage("User has been succesfully deleted");
         responseUserDTO.setSuccess(true);
         return responseUserDTO;
+    }
+
+    private boolean hasTasksRelated(String email) {
+        Optional<UserEntity> deleteUser = repository.findByEmail(email);
+
+        if(deleteUser.get().getTaskList().isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
 }
