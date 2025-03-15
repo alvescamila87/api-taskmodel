@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -26,8 +26,9 @@ public class TaskDTO {
 
     @NotNull(message = "The date task cannot be null")
     @DateTimeFormat(pattern = "dd/mm/yyyy")
-    private Date dateTask;
+    private LocalDate dateTask;
 
+    @NotNull(message = "The status cannot be null")
     private StatusENUM statusENUM;
 
     @NotBlank(message = "The user email cannot be null")

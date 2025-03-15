@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tb_task")
@@ -29,8 +29,9 @@ public class TaskEntity {
     private String description;
 
     @Column(name = "date_task", nullable = false)
-    private Date dateTask;
+    private LocalDate dateTask;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private StatusENUM status;
 

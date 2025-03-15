@@ -16,7 +16,7 @@ It aims to create an application to manage tasks using **Java Spring Boot** e **
 ## 🏗️ Project structure
 
 ### MER - Entity-Relationship Model
-![img.png](img.png)
+![img_2.png](img_2.png)
 
 ### Relationships
 `One-to-Many: One User can have many Tasks.`
