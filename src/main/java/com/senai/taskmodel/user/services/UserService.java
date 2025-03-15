@@ -87,16 +87,29 @@ public class UserService {
         return responseUserDTO;
     }
 
-    public void deleteUser(String email) {
+    public ResponseUserDTO deleteUser(String email) {
+        ResponseUserDTO responseUserDTO = new ResponseUserDTO();
+
         Optional<UserEntity> deleteUser = repository.findByEmail(email);
 
         if(deleteUser.isEmpty()) {
-            return;
+            responseUserDTO.setSuccess(false);
+            responseUserDTO.setMessage("User not found");
+            return responseUserDTO;
+        }
+
+        if(!deleteUser.get().getTaskList().isEmpty()) {
+            responseUserDTO.setSuccess(false);
+            responseUserDTO.setMessage("User cannot be removed because he has tasks related");
+            return responseUserDTO;
         }
 
         UserEntity deleteUserEntity = deleteUser.get();
-
         repository.delete(deleteUserEntity);
+
+        responseUserDTO.setMessage("User has been succesfully deleted");
+        responseUserDTO.setSuccess(true);
+        return responseUserDTO;
     }
 
 }

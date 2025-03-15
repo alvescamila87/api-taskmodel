@@ -45,8 +45,17 @@ public class UserController {
     }
 
     @DeleteMapping("/{email}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String email) {
-        service.deleteUser(email);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ResponseUserDTO> deleteUser(@PathVariable String email) {
+        ResponseUserDTO deleteUser = service.deleteUser(email);
+
+        if(deleteUser.getSuccess()) {
+            return ResponseEntity.status(200).body(deleteUser);
+        }
+
+        if(!deleteUser.getTaskDTOList().isEmpty()) {
+            return ResponseEntity.status(409).body(deleteUser);
+        }
+
+        return ResponseEntity.status(404).body(deleteUser);
     }
 }
