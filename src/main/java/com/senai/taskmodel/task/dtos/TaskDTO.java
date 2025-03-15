@@ -1,8 +1,7 @@
 package com.senai.taskmodel.task.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.senai.taskmodel.task.enums.StatusENUM;
+import com.senai.taskmodel.task.enums.EnumStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,7 +29,7 @@ public class TaskDTO {
     private LocalDate dateTask;
 
     @NotNull(message = "The status cannot be null")
-    private StatusENUM status;
+    private EnumStatus status;
 
     @NotBlank(message = "The user email cannot be null")
     @Email(message = "The email provided is not valid")

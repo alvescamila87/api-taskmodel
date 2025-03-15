@@ -1,6 +1,6 @@
 package com.senai.taskmodel.task.entities;
 
-import com.senai.taskmodel.task.enums.StatusENUM;
+import com.senai.taskmodel.task.enums.EnumStatus;
 import com.senai.taskmodel.user.entities.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class TaskEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private StatusENUM status;
+    private EnumStatus status;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

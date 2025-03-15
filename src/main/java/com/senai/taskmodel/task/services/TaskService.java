@@ -2,6 +2,7 @@ package com.senai.taskmodel.task.services;
 
 import com.senai.taskmodel.task.dtos.TaskDTO;
 import com.senai.taskmodel.task.entities.TaskEntity;
+import com.senai.taskmodel.task.enums.EnumStatus;
 import com.senai.taskmodel.task.repositories.TaskRepository;
 import com.senai.taskmodel.user.entities.UserEntity;
 import com.senai.taskmodel.user.repositories.UserRepository;

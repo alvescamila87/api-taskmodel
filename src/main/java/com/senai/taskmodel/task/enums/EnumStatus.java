@@ -1,7 +1,6 @@
 package com.senai.taskmodel.task.enums;
 
-public enum StatusENUM {
-
+public enum EnumStatus {
     OPEN,
     IN_PROGRESS,
     PENDING,
