@@ -76,7 +76,7 @@ public class UserService {
         repository.save(updateUserEntity);
 
         responseUserDTO.setMessage("User has been successfully updated");
-        responseUserDTO.setSuccess(false);
+        responseUserDTO.setSuccess(true);
 
         return responseUserDTO;
     }

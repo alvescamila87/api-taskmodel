@@ -1,5 +1,6 @@
 package com.senai.taskmodel.task.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.senai.taskmodel.task.enums.EnumStatus;
 import jakarta.validation.constraints.Email;
@@ -13,7 +14,8 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-public class TaskDTO {
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
+public class ResponseTaskDTO {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
@@ -34,4 +36,9 @@ public class TaskDTO {
     @NotBlank(message = "The user email cannot be null")
     @Email(message = "The email provided is not valid")
     private String userEmail;
+
+    private String mensagem;
+
+    @JsonIgnore
+    private Boolean success;
 }
