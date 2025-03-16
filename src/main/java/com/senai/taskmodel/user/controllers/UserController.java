@@ -19,8 +19,12 @@ public class UserController {
     UserService service;
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> listAllUsers() {
-        List<UserDTO> listUsers = service.findAllUsers();
+    public ResponseEntity<List<ResponseUserDTO>> listAllUsers() {
+        List<ResponseUserDTO> listUsers = service.findAllUsers();
+
+        if(listUsers.isEmpty()) {
+            return ResponseEntity.status(404).body(listUsers);
+        }
         return ResponseEntity.ok().body(listUsers);
     }
 

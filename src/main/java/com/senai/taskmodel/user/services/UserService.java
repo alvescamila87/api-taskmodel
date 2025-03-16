@@ -18,17 +18,17 @@ public class UserService {
     @Autowired
     UserRepository repository;
 
-    public List<UserDTO> findAllUsers() {
-        List<UserDTO> listUsers = new ArrayList<>();
+    public List<ResponseUserDTO> findAllUsers() {
+        List<ResponseUserDTO> listUsers = new ArrayList<>();
 
         List<UserEntity> listUserEntity = repository.findAll();
 
         for(UserEntity userEntity : listUserEntity) {
-            UserDTO userDTO = new UserDTO();
-            userDTO.setName(userEntity.getName());
-            userDTO.setEmail(userEntity.getEmail());
+            ResponseUserDTO responseUserDTO = new ResponseUserDTO();
+            responseUserDTO.setName(userEntity.getName());
+            responseUserDTO.setEmail(userEntity.getEmail());
 
-            listUsers.add(userDTO);
+            listUsers.add(responseUserDTO);
         }
 
         return listUsers;
@@ -56,12 +56,6 @@ public class UserService {
         responseUserDTO.setMessage("User has been successfully registered.");
 
         return responseUserDTO;
-    }
-
-    private Boolean isUserAlreadyExists(UserDTO userDTO) {
-        Optional<UserEntity> userEntityEmail = repository.findByEmail(userDTO.getEmail());
-
-        return userEntityEmail.isPresent();
     }
 
     public ResponseUserDTO updateUser(String email, UserDTO userDTO){
@@ -110,6 +104,12 @@ public class UserService {
         responseUserDTO.setMessage("User has been succesfully deleted");
         responseUserDTO.setSuccess(true);
         return responseUserDTO;
+    }
+
+    private Boolean isUserAlreadyExists(UserDTO userDTO) {
+        Optional<UserEntity> userEntityEmail = repository.findByEmail(userDTO.getEmail());
+
+        return userEntityEmail.isPresent();
     }
 
     private boolean hasTasksRelated(String email) {
