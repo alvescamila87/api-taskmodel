@@ -23,95 +23,125 @@ public class UserService {
     @Autowired
     UserRepository repository;
 
-    @Autowired
-    TaskRepository taskRepository;
-
     public List<ResponseUserDTO> findAllUsers() {
         List<ResponseUserDTO> listUsers = new ArrayList<>();
 
         List<UserEntity> listUserEntity = repository.findAll();
 
         for(UserEntity userEntity : listUserEntity) {
-            ResponseUserDTO responseUserDTO = new ResponseUserDTO();
-            responseUserDTO.setName(userEntity.getName());
-            responseUserDTO.setEmail(userEntity.getEmail());
+            ResponseUserDTO responseUserDTO = ResponseUserDTO
+                    .builder()
+                    .email(userEntity.getEmail())
+                    .name(userEntity.getName())
+                    .build();
 
             listUsers.add(responseUserDTO);
         }
-
         return listUsers;
     }
 
         public ResponseUserDTO createUser(UserDTO userDTO) {
-        ResponseUserDTO responseUserDTO = new ResponseUserDTO();
+        ResponseUserDTO responseUserDTO = ResponseUserDTO.builder().build();
 
-        UserEntity newUserEntity = new UserEntity();
+        UserEntity newUserEntity = UserEntity.builder().build();
 
         if(isUserAlreadyExists(userDTO)) {
-            responseUserDTO.setMessage("The email is already in use.");
-            responseUserDTO.setSuccess(false);
+            responseUserDTO
+                    .toBuilder()
+                    .message("The email is already in use.")
+                    .success(false)
+                    .build();
+
             return responseUserDTO;
         }
 
-        newUserEntity.setName(userDTO.getName());
-        newUserEntity.setEmail(userDTO.getEmail());
+        newUserEntity
+                .toBuilder()
+                .name(userDTO.getName())
+                .email(userDTO.getEmail())
+                .build();
 
         repository.save(newUserEntity);
 
-        responseUserDTO.setName(userDTO.getName());
-        responseUserDTO.setEmail(userDTO.getEmail());
-        responseUserDTO.setSuccess(true);
-        responseUserDTO.setMessage("User has been successfully registered.");
+        responseUserDTO
+                .toBuilder()
+                .name(userDTO.getName())
+                .email(userDTO.getEmail())
+                .success(true)
+                .message("User has been successfully registered.")
+                .build();
 
         return responseUserDTO;
     }
 
     public ResponseUserDTO updateUser(String email, UserDTO userDTO){
-        ResponseUserDTO responseUserDTO = new ResponseUserDTO();
+        ResponseUserDTO responseUserDTO = ResponseUserDTO.builder().build();
 
         Optional<UserEntity> userEntityEmail = repository.findByEmail(email);
 
         if(userEntityEmail.isEmpty()) {
-            responseUserDTO.setMessage("User not found");
-            responseUserDTO.setSuccess(false);
+            responseUserDTO
+                    .toBuilder()
+                    .message("User not found")
+                    .success(false)
+                    .build();
+
             return responseUserDTO;
         }
 
         UserEntity updateUserEntity = userEntityEmail.get();
-        updateUserEntity.setName(userDTO.getName());
-        updateUserEntity.setEmail(userDTO.getEmail());
+        updateUserEntity
+                .toBuilder()
+                .name(userDTO.getName())
+                .email(userDTO.getEmail())
+                .build();
 
         repository.save(updateUserEntity);
 
-        responseUserDTO.setMessage("User has been successfully updated");
-        responseUserDTO.setSuccess(true);
+        responseUserDTO
+                .toBuilder()
+                .message("User has been successfully updated")
+                .success(true)
+                .build();
 
         return responseUserDTO;
     }
 
     public ResponseUserDTO deleteUser(String email) {
-        ResponseUserDTO responseUserDTO = new ResponseUserDTO();
+        ResponseUserDTO responseUserDTO = ResponseUserDTO.builder().build();
 
         Optional<UserEntity> deleteUser = repository.findByEmail(email);
 
         if(deleteUser.isEmpty()) {
-            responseUserDTO.setSuccess(false);
-            responseUserDTO.setMessage("User not found");
+            responseUserDTO
+                    .toBuilder()
+                    .success(false)
+                    .message("User not found")
+                    .build();
+
             return responseUserDTO;
         }
 
         UserEntity deleteUserEntity = deleteUser.get();
 
         if(!deleteUserEntity.getTaskList().isEmpty()) {
-            responseUserDTO.setMessage("User cannot be removed because he has tasks assigned to him");
-            responseUserDTO.setSuccess(false);
+            responseUserDTO
+                    .toBuilder()
+                    .message("User cannot be removed because he has tasks assigned to him")
+                    .success(false)
+                    .build();
+
             return responseUserDTO;
         }
 
         repository.delete(deleteUserEntity);
 
-        responseUserDTO.setMessage("User has been succesfully deleted");
-        responseUserDTO.setSuccess(true);
+        responseUserDTO
+                .toBuilder()
+                .message("User has been succesfully deleted")
+                .success(true)
+                .build();
+
         return responseUserDTO;
     }
 

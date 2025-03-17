@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.senai.taskmodel.task.dtos.TaskDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@Builder(toBuilder = true)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ResponseUserDTO {
 

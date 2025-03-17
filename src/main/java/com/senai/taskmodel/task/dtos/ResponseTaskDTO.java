@@ -17,7 +17,6 @@ import java.time.LocalDate;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ResponseTaskDTO {
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long id;
 
     @NotBlank(message = "The title cannot be null")
