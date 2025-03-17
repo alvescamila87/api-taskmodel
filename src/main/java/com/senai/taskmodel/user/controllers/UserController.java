@@ -1,5 +1,7 @@
 package com.senai.taskmodel.user.controllers;
 
+import com.senai.taskmodel.task.dtos.TaskDTO;
+import com.senai.taskmodel.task.services.TaskService;
 import com.senai.taskmodel.user.dtos.ResponseUserDTO;
 import com.senai.taskmodel.user.dtos.UserDTO;
 
@@ -17,6 +19,9 @@ public class UserController {
 
     @Autowired
     UserService service;
+
+    @Autowired
+    TaskService taskService;
 
     @GetMapping
     public ResponseEntity<List<ResponseUserDTO>> listAllUsers() {
@@ -52,12 +57,12 @@ public class UserController {
     public ResponseEntity<ResponseUserDTO> deleteUser(@PathVariable String email) {
         ResponseUserDTO deleteUser = service.deleteUser(email);
 
-        if(deleteUser.getSuccess()) {
-            return ResponseEntity.status(200).body(deleteUser);
+        if(deleteUser.getTaskDTOList() != null && !deleteUser.getTaskDTOList().isEmpty()) {
+            return ResponseEntity.status(409).body(deleteUser);
         }
 
-        if(!deleteUser.getTaskDTOList().isEmpty()) {
-            return ResponseEntity.status(409).body(deleteUser);
+        if(deleteUser.getSuccess()) {
+            return ResponseEntity.status(200).body(deleteUser);
         }
 
         return ResponseEntity.status(404).body(deleteUser);

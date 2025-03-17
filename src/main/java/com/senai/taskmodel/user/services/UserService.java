@@ -1,5 +1,9 @@
 package com.senai.taskmodel.user.services;
 
+import com.senai.taskmodel.task.dtos.ResponseTaskDTO;
+import com.senai.taskmodel.task.dtos.TaskDTO;
+import com.senai.taskmodel.task.entities.TaskEntity;
+import com.senai.taskmodel.task.repositories.TaskRepository;
 import com.senai.taskmodel.user.dtos.ResponseUserDTO;
 import com.senai.taskmodel.user.dtos.UserDTO;
 import com.senai.taskmodel.user.entities.UserEntity;
@@ -8,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +22,9 @@ public class UserService {
 
     @Autowired
     UserRepository repository;
+
+    @Autowired
+    TaskRepository taskRepository;
 
     public List<ResponseUserDTO> findAllUsers() {
         List<ResponseUserDTO> listUsers = new ArrayList<>();
@@ -92,13 +100,14 @@ public class UserService {
             return responseUserDTO;
         }
 
-        if(hasTasksRelated(email)) {
-            responseUserDTO.setMessage("User cannot be removed bescause he has tasks related");
+        UserEntity deleteUserEntity = deleteUser.get();
+
+        if(!deleteUserEntity.getTaskList().isEmpty()) {
+            responseUserDTO.setMessage("User cannot be removed because he has tasks assigned to him");
             responseUserDTO.setSuccess(false);
             return responseUserDTO;
         }
 
-        UserEntity deleteUserEntity = deleteUser.get();
         repository.delete(deleteUserEntity);
 
         responseUserDTO.setMessage("User has been succesfully deleted");
@@ -112,13 +121,5 @@ public class UserService {
         return userEntityEmail.isPresent();
     }
 
-    private boolean hasTasksRelated(String email) {
-        Optional<UserEntity> deleteUser = repository.findByEmail(email);
-
-        if(deleteUser.get().getTaskList().isEmpty()) {
-            return false;
-        }
-        return true;
-    }
 
 }
