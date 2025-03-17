@@ -1,5 +1,6 @@
 package com.senai.taskmodel.task.controllers;
 
+import com.senai.taskmodel.task.dtos.ResponseTaskDTO;
 import com.senai.taskmodel.task.dtos.TaskDTO;
 import com.senai.taskmodel.task.services.TaskService;
 import jakarta.validation.Valid;
@@ -17,19 +18,19 @@ public class TaskController {
     TaskService service;
 
     @GetMapping
-    public ResponseEntity<List<TaskDTO>> listAllTasks() {
-        List<TaskDTO> listAllTasksDTO = service.findAllTasks();
+    public ResponseEntity<List<ResponseTaskDTO>> listAllTasks() {
+        List<ResponseTaskDTO> listAllTasksDTO = service.findAllTasks();
         return ResponseEntity.ok().body(listAllTasksDTO);
     }
 
-    @PostMapping ResponseEntity<TaskDTO> createTask(@RequestBody @Valid TaskDTO taskDTO) {
-        TaskDTO newTask = service.createTask(taskDTO);
+    @PostMapping ResponseEntity<ResponseTaskDTO> createTask(@RequestBody @Valid TaskDTO taskDTO) {
+        ResponseTaskDTO newTask = service.createTask(taskDTO);
         return ResponseEntity.ok().body(newTask);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskDTO> updateTask(@PathVariable Long id, @RequestBody @Valid TaskDTO taskDTO){
-        TaskDTO updateTask = service.updateTask(id, taskDTO);
+    public ResponseEntity<ResponseTaskDTO> updateTask(@PathVariable Long id, @RequestBody @Valid TaskDTO taskDTO){
+        ResponseTaskDTO updateTask = service.updateTask(id, taskDTO);
         return ResponseEntity.ok().body(updateTask);
     }
 

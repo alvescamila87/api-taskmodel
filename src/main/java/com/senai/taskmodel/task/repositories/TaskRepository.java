@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
+
+    // criar método para buscar usuario por email e task
 }

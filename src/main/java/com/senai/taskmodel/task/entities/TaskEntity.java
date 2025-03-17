@@ -3,10 +3,7 @@ package com.senai.taskmodel.task.entities;
 import com.senai.taskmodel.task.enums.EnumStatus;
 import com.senai.taskmodel.user.entities.UserEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -16,6 +13,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder(toBuilder = true)
 public class TaskEntity {
 
     @Id

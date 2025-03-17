@@ -5,6 +5,7 @@ import com.senai.taskmodel.task.enums.EnumStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
+@Builder(toBuilder = true)
 public class TaskDTO {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)

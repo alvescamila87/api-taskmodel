@@ -25,7 +25,4 @@ public class UserEntity {
 
     @Column(name = "email", unique = true, nullable = false)
     private String email;
-
-    @OneToMany(mappedBy = "user")
-    private List<TaskEntity> taskList = new ArrayList<>();
 }

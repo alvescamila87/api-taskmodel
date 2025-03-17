@@ -46,13 +46,11 @@ public class UserService {
         UserEntity newUserEntity = UserEntity.builder().build();
 
         if(isUserAlreadyExists(userDTO)) {
-            responseUserDTO
+            return responseUserDTO
                     .toBuilder()
                     .message("The email is already in use.")
                     .success(false)
                     .build();
-
-            return responseUserDTO;
         }
 
         newUserEntity
@@ -63,15 +61,13 @@ public class UserService {
 
         repository.save(newUserEntity);
 
-        responseUserDTO
+        return responseUserDTO
                 .toBuilder()
                 .name(userDTO.getName())
                 .email(userDTO.getEmail())
                 .success(true)
                 .message("User has been successfully registered.")
                 .build();
-
-        return responseUserDTO;
     }
 
     public ResponseUserDTO updateUser(String email, UserDTO userDTO){
@@ -80,13 +76,11 @@ public class UserService {
         Optional<UserEntity> userEntityEmail = repository.findByEmail(email);
 
         if(userEntityEmail.isEmpty()) {
-            responseUserDTO
+            return responseUserDTO
                     .toBuilder()
                     .message("User not found")
                     .success(false)
                     .build();
-
-            return responseUserDTO;
         }
 
         UserEntity updateUserEntity = userEntityEmail.get();
@@ -98,13 +92,11 @@ public class UserService {
 
         repository.save(updateUserEntity);
 
-        responseUserDTO
+        return responseUserDTO
                 .toBuilder()
                 .message("User has been successfully updated")
                 .success(true)
                 .build();
-
-        return responseUserDTO;
     }
 
     public ResponseUserDTO deleteUser(String email) {
@@ -113,36 +105,32 @@ public class UserService {
         Optional<UserEntity> deleteUser = repository.findByEmail(email);
 
         if(deleteUser.isEmpty()) {
-            responseUserDTO
+            return responseUserDTO
                     .toBuilder()
                     .success(false)
                     .message("User not found")
                     .build();
-
-            return responseUserDTO;
         }
 
         UserEntity deleteUserEntity = deleteUser.get();
 
-        if(!deleteUserEntity.getTaskList().isEmpty()) {
-            responseUserDTO
-                    .toBuilder()
-                    .message("User cannot be removed because he has tasks assigned to him")
-                    .success(false)
-                    .build();
-
-            return responseUserDTO;
-        }
+//        if(!deleteUserEntity.getTaskList().isEmpty()) {
+//            responseUserDTO
+//                    .toBuilder()
+//                    .message("User cannot be removed because he has tasks assigned to him")
+//                    .success(false)
+//                    .build();
+//
+//            return responseUserDTO;
+//        }
 
         repository.delete(deleteUserEntity);
 
-        responseUserDTO
+        return responseUserDTO
                 .toBuilder()
-                .message("User has been succesfully deleted")
+                .message("User has been successfully deleted")
                 .success(true)
                 .build();
-
-        return responseUserDTO;
     }
 
     private Boolean isUserAlreadyExists(UserDTO userDTO) {
@@ -150,6 +138,4 @@ public class UserService {
 
         return userEntityEmail.isPresent();
     }
-
-
 }

@@ -24,9 +24,6 @@ public class ResponseUserDTO {
     @Email(message = "The email provided is not valid")
     private String email;
 
-    @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
-    private List<TaskDTO> taskDTOList = new ArrayList<>();
-
     private String message;
 
     @JsonIgnore

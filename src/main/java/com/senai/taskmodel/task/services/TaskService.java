@@ -1,5 +1,6 @@
 package com.senai.taskmodel.task.services;
 
+import com.senai.taskmodel.task.dtos.ResponseTaskDTO;
 import com.senai.taskmodel.task.dtos.TaskDTO;
 import com.senai.taskmodel.task.entities.TaskEntity;
 import com.senai.taskmodel.task.enums.EnumStatus;
@@ -22,28 +23,30 @@ public class TaskService {
     @Autowired
     UserRepository userRepository;
 
-    public List<TaskDTO> findAllTasks() {
-        List<TaskDTO> listAllTasks = new ArrayList<>();
+    public List<ResponseTaskDTO> findAllTasks() {
+        List<ResponseTaskDTO> listAllTasks = new ArrayList<>();
 
         List<TaskEntity> listAllTasksEntity = repository.findAll();
 
         for(TaskEntity taskEntity : listAllTasksEntity) {
-            TaskDTO taskDTO = new TaskDTO();
-            taskDTO.setId(taskEntity.getId());
-            taskDTO.setTitle(taskEntity.getTitle());
-            taskDTO.setDescription(taskEntity.getDescription());
-            taskDTO.setDateTask(taskEntity.getDateTask());
-            taskDTO.setStatus(taskEntity.getStatus());
-            taskDTO.setUserEmail(taskEntity.getUser().getEmail());
+            ResponseTaskDTO responseTaskDTO = ResponseTaskDTO
+                    .builder()
+                    .id(taskEntity.getId())
+                    .title(taskEntity.getTitle())
+                    .description(taskEntity.getDescription())
+                    .dateTask(taskEntity.getDateTask())
+                    .status(taskEntity.getStatus())
+                    .userEmail(taskEntity.getUser().getEmail())
+                    .build();
 
-            listAllTasks.add(taskDTO);
+            listAllTasks.add(responseTaskDTO);
         }
 
         return listAllTasks;
     }
 
-    public TaskDTO createTask(TaskDTO taskDTO) {
-        TaskEntity newTaskEntity = new TaskEntity();
+    public ResponseTaskDTO createTask(TaskDTO taskDTO) {
+        TaskEntity newTaskEntity = TaskEntity.builder().build();
 
         Optional<UserEntity> userEntityEmail = userRepository.findByEmail(taskDTO.getUserEmail());
 
@@ -51,18 +54,28 @@ public class TaskService {
             return null;
         }
 
-        newTaskEntity.setTitle(taskDTO.getTitle());
-        newTaskEntity.setDescription(taskDTO.getDescription());
-        newTaskEntity.setDateTask(taskDTO.getDateTask());
-        newTaskEntity.setStatus(taskDTO.getStatus());
-        newTaskEntity.setUser(userEntityEmail.get());
+        newTaskEntity
+                .toBuilder()
+                .title(taskDTO.getTitle())
+                .description(taskDTO.getDescription())
+                .dateTask(taskDTO.getDateTask())
+                .status(taskDTO.getStatus())
+                .user(userEntityEmail.get())
+                .build();
 
         repository.save(newTaskEntity);
 
-        return taskDTO;
+        return ResponseTaskDTO
+                .builder()
+                .title(taskDTO.getTitle())
+                .description(taskDTO.getDescription())
+                .dateTask(taskDTO.getDateTask())
+                .status(taskDTO.getStatus())
+                .userEmail(userEntityEmail.get().getEmail())
+                .build();
     }
     
-    public TaskDTO updateTask(Long id, TaskDTO taskDTO) {
+    public ResponseTaskDTO updateTask(Long id, TaskDTO taskDTO) {
 
         Optional<TaskEntity> updateTaskEntityById = repository.findById(id);
 
@@ -77,15 +90,25 @@ public class TaskService {
         }
 
         TaskEntity updateTaskEntity = updateTaskEntityById.get();
-        updateTaskEntity.setTitle(taskDTO.getTitle());
-        updateTaskEntity.setDescription(taskDTO.getDescription());
-        updateTaskEntity.setDateTask(taskDTO.getDateTask());
-        updateTaskEntity.setStatus(taskDTO.getStatus());
-        updateTaskEntity.setUser(userEntityEmail.get());
+        updateTaskEntity
+                .toBuilder()
+                .title(taskDTO.getTitle())
+                .description(taskDTO.getDescription())
+                .dateTask(taskDTO.getDateTask())
+                .status(taskDTO.getStatus())
+                .user(userEntityEmail.get())
+                .build();
 
         repository.save(updateTaskEntity);
 
-        return taskDTO;
+        return ResponseTaskDTO
+                .builder()
+                .title(taskDTO.getTitle())
+                .description(taskDTO.getDescription())
+                .dateTask(taskDTO.getDateTask())
+                .status(taskDTO.getStatus())
+                .userEmail(userEntityEmail.get().getEmail())
+                .build();
     }
 
     public void deleteTask(Long id) {
