@@ -14,8 +14,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder(toBuilder = true)
-@JsonInclude(value = JsonInclude.Include.NON_NULL)
+@Builder()
+//@JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ResponseUserDTO {
 
     @NotBlank(message = "The name cannot be null")

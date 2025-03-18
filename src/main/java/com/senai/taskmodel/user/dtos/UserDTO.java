@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Builder(toBuilder = true)
+@Builder()
 public class UserDTO {
 
     @NotBlank(message = "The name cannot be null")

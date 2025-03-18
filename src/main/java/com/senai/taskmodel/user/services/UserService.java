@@ -1,9 +1,5 @@
 package com.senai.taskmodel.user.services;
 
-import com.senai.taskmodel.task.dtos.ResponseTaskDTO;
-import com.senai.taskmodel.task.dtos.TaskDTO;
-import com.senai.taskmodel.task.entities.TaskEntity;
-import com.senai.taskmodel.task.repositories.TaskRepository;
 import com.senai.taskmodel.user.dtos.ResponseUserDTO;
 import com.senai.taskmodel.user.dtos.UserDTO;
 import com.senai.taskmodel.user.entities.UserEntity;
@@ -12,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,28 +36,22 @@ public class UserService {
     }
 
         public ResponseUserDTO createUser(UserDTO userDTO) {
-        ResponseUserDTO responseUserDTO = ResponseUserDTO.builder().build();
-
-        UserEntity newUserEntity = UserEntity.builder().build();
 
         if(isUserAlreadyExists(userDTO)) {
-            return responseUserDTO
-                    .toBuilder()
+            return ResponseUserDTO.builder()
                     .message("The email is already in use.")
                     .success(false)
                     .build();
         }
 
-        newUserEntity
-                .toBuilder()
+        UserEntity newUserEntity = UserEntity.builder()
                 .name(userDTO.getName())
                 .email(userDTO.getEmail())
                 .build();
 
         repository.save(newUserEntity);
 
-        return responseUserDTO
-                .toBuilder()
+        return ResponseUserDTO.builder()
                 .name(userDTO.getName())
                 .email(userDTO.getEmail())
                 .success(true)
@@ -71,42 +60,37 @@ public class UserService {
     }
 
     public ResponseUserDTO updateUser(String email, UserDTO userDTO){
-        ResponseUserDTO responseUserDTO = ResponseUserDTO.builder().build();
 
         Optional<UserEntity> userEntityEmail = repository.findByEmail(email);
 
         if(userEntityEmail.isEmpty()) {
-            return responseUserDTO
-                    .toBuilder()
+            return ResponseUserDTO.builder()
                     .message("User not found")
                     .success(false)
                     .build();
         }
 
+
         UserEntity updateUserEntity = userEntityEmail.get();
-        updateUserEntity
-                .toBuilder()
-                .name(userDTO.getName())
-                .email(userDTO.getEmail())
-                .build();
+        updateUserEntity.setEmail(userDTO.getEmail());
+        updateUserEntity.setName(userDTO.getName());
 
         repository.save(updateUserEntity);
 
-        return responseUserDTO
-                .toBuilder()
+        return ResponseUserDTO.builder()
+                .name(userDTO.getName())
+                .email(userDTO.getEmail())
                 .message("User has been successfully updated")
                 .success(true)
                 .build();
     }
 
     public ResponseUserDTO deleteUser(String email) {
-        ResponseUserDTO responseUserDTO = ResponseUserDTO.builder().build();
 
         Optional<UserEntity> deleteUser = repository.findByEmail(email);
 
         if(deleteUser.isEmpty()) {
-            return responseUserDTO
-                    .toBuilder()
+            return ResponseUserDTO.builder()
                     .success(false)
                     .message("User not found")
                     .build();
@@ -126,8 +110,7 @@ public class UserService {
 
         repository.delete(deleteUserEntity);
 
-        return responseUserDTO
-                .toBuilder()
+        return ResponseUserDTO.builder()
                 .message("User has been successfully deleted")
                 .success(true)
                 .build();

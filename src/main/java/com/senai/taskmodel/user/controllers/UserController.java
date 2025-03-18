@@ -1,6 +1,4 @@
 package com.senai.taskmodel.user.controllers;
-
-import com.senai.taskmodel.task.services.TaskService;
 import com.senai.taskmodel.user.dtos.ResponseUserDTO;
 import com.senai.taskmodel.user.dtos.UserDTO;
 

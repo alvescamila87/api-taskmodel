@@ -46,16 +46,14 @@ public class TaskService {
     }
 
     public ResponseTaskDTO createTask(TaskDTO taskDTO) {
-        TaskEntity newTaskEntity = TaskEntity.builder().build();
-
         Optional<UserEntity> userEntityEmail = userRepository.findByEmail(taskDTO.getUserEmail());
 
         if(userEntityEmail.isEmpty()) {
             return null;
         }
 
-        newTaskEntity
-                .toBuilder()
+        TaskEntity newTaskEntity = TaskEntity
+                .builder()
                 .title(taskDTO.getTitle())
                 .description(taskDTO.getDescription())
                 .dateTask(taskDTO.getDateTask())
@@ -90,14 +88,12 @@ public class TaskService {
         }
 
         TaskEntity updateTaskEntity = updateTaskEntityById.get();
-        updateTaskEntity
-                .toBuilder()
-                .title(taskDTO.getTitle())
-                .description(taskDTO.getDescription())
-                .dateTask(taskDTO.getDateTask())
-                .status(taskDTO.getStatus())
-                .user(userEntityEmail.get())
-                .build();
+        updateTaskEntity.setTitle(taskDTO.getTitle());
+        updateTaskEntity.setDescription(taskDTO.getDescription());
+        updateTaskEntity.setDateTask(taskDTO.getDateTask());
+        updateTaskEntity.setStatus(taskDTO.getStatus());
+        updateTaskEntity.setUser(userEntityEmail.get());
+
 
         repository.save(updateTaskEntity);
 
