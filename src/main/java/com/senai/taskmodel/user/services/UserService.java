@@ -70,7 +70,6 @@ public class UserService {
                     .build();
         }
 
-
         UserEntity updateUserEntity = userEntityEmail.get();
         updateUserEntity.setEmail(userDTO.getEmail());
         updateUserEntity.setName(userDTO.getName());
