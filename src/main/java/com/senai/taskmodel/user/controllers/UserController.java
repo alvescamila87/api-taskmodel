@@ -27,6 +27,17 @@ public class UserController {
         return ResponseEntity.ok().body(listUsers);
     }
 
+    @GetMapping("/{email}")
+    public ResponseEntity<ResponseUserDTO> findUserById(@PathVariable String email) {
+        ResponseUserDTO responseUserDTO = service.getUserById(email);
+
+        if(!responseUserDTO.getSuccess()){
+            return ResponseEntity.status(404).body(responseUserDTO);
+        }
+
+        return ResponseEntity.ok().body(responseUserDTO);
+    }
+
     @PostMapping
     public ResponseEntity<ResponseUserDTO> createUser(@RequestBody @Valid UserDTO userDTO) {
         ResponseUserDTO newUser = service.createUser(userDTO);

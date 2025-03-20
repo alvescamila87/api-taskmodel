@@ -1,5 +1,6 @@
 package com.senai.taskmodel.task.services;
 
+import com.senai.taskmodel.task.dtos.MensagemDTO;
 import com.senai.taskmodel.task.dtos.ResponseTaskDTO;
 import com.senai.taskmodel.task.dtos.TaskDTO;
 import com.senai.taskmodel.task.entities.TaskEntity;
@@ -10,8 +11,10 @@ import com.senai.taskmodel.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,6 +31,10 @@ public class TaskService {
 
         List<TaskEntity> listAllTasksEntity = repository.findAll();
 
+        if(listAllTasksEntity.isEmpty()){
+            return listAllTasks;
+        }
+
         for(TaskEntity taskEntity : listAllTasksEntity) {
             ResponseTaskDTO responseTaskDTO = ResponseTaskDTO
                     .builder()
@@ -37,12 +44,34 @@ public class TaskService {
                     .dateTask(taskEntity.getDateTask())
                     .status(taskEntity.getStatus())
                     .userEmail(taskEntity.getUser().getEmail())
+                    .success(true)
                     .build();
 
             listAllTasks.add(responseTaskDTO);
         }
 
         return listAllTasks;
+    }
+
+    public ResponseTaskDTO getTaskById(Long id) {
+        Optional<TaskEntity> taskEntity = repository.findById(id);
+
+        if(taskEntity.isEmpty()) {
+           return ResponseTaskDTO
+                    .builder()
+                    .mensagem("Task not found")
+                    .success(false)
+                    .build();
+        }
+       return ResponseTaskDTO
+                .builder()
+                .id(taskEntity.get().getId())
+                .title(taskEntity.get().getDescription())
+                .dateTask(taskEntity.get().getDateTask())
+                .status(taskEntity.get().getStatus())
+                .userEmail(taskEntity.get().getUser().getEmail())
+                .success(true)
+                .build();
     }
 
     public ResponseTaskDTO createTask(TaskDTO taskDTO) {

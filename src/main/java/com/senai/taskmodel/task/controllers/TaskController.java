@@ -1,5 +1,6 @@
 package com.senai.taskmodel.task.controllers;
 
+import com.senai.taskmodel.task.dtos.MensagemDTO;
 import com.senai.taskmodel.task.dtos.ResponseTaskDTO;
 import com.senai.taskmodel.task.dtos.TaskDTO;
 import com.senai.taskmodel.task.services.TaskService;
@@ -20,7 +21,22 @@ public class TaskController {
     @GetMapping
     public ResponseEntity<List<ResponseTaskDTO>> listAllTasks() {
         List<ResponseTaskDTO> listAllTasksDTO = service.findAllTasks();
+
+        if(listAllTasksDTO.isEmpty()){
+            return ResponseEntity.status(404).body(listAllTasksDTO);
+        }
         return ResponseEntity.ok().body(listAllTasksDTO);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseTaskDTO> findTaskById(@PathVariable Long id) {
+        ResponseTaskDTO responseTaskDTO = service.getTaskById(id);
+
+        if(!responseTaskDTO.getSuccess()) {
+            return ResponseEntity.status(404).body(responseTaskDTO);
+        }
+
+        return ResponseEntity.ok().body(responseTaskDTO);
     }
 
     @PostMapping ResponseEntity<ResponseTaskDTO> createTask(@RequestBody @Valid TaskDTO taskDTO) {

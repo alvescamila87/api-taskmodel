@@ -40,7 +40,28 @@ public class UserService {
         return listUsers;
     }
 
-        public ResponseUserDTO createUser(UserDTO userDTO) {
+    public ResponseUserDTO getUserById(String email) {
+        Optional<UserEntity> userEntity = repository.findByEmail(email);
+
+        if(userEntity.isEmpty()) {
+
+            return ResponseUserDTO
+                    .builder()
+                    .message("User not found")
+                    .success(false)
+                    .build();
+        }
+
+        return ResponseUserDTO
+                .builder()
+                .name(userEntity.get().getName())
+                .email(userEntity.get().getEmail())
+                //.message("User not found")
+                .success(true)
+                .build();
+    }
+
+    public ResponseUserDTO createUser(UserDTO userDTO) {
 
         Optional<UserEntity> userEntityEmail = repository.findByEmail(userDTO.getEmail());
 
