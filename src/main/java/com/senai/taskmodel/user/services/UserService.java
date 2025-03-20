@@ -117,19 +117,9 @@ public class UserService {
 
         UserEntity deleteUserEntity = deleteUser.get();
 
-//        if(!deleteUserEntity.getTaskList().isEmpty()) {
-//            responseUserDTO
-//                    .toBuilder()
-//                    .message("User cannot be removed because he has tasks assigned to him")
-//                    .success(false)
-//                    .build();
-//
-//            return responseUserDTO;
-//        }
+        final var hasTaskRelated = taskRepository.existsByUserEmail(email);
 
-        List<TaskEntity> listAllTasksByUser = taskRepository.findByUserEmail(email);
-
-        if(!listAllTasksByUser.isEmpty()) {
+        if(hasTaskRelated) {
             return ResponseUserDTO.builder()
                     .message("User cannot be removed because he has tasks assigned to him")
                     .success(false)

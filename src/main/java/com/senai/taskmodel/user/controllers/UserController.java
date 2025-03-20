@@ -51,16 +51,14 @@ public class UserController {
     public ResponseEntity<ResponseUserDTO> deleteUser(@PathVariable String email) {
         ResponseUserDTO deleteUser = service.deleteUser(email);
 
-//        if(deleteUser.getTaskDTOList() != null && !deleteUser.getTaskDTOList().isEmpty()) {
-//            return ResponseEntity.status(409).body(deleteUser);
-//        }
-
-        if(deleteUser.get)
-
-        if(deleteUser.getSuccess()) {
-            return ResponseEntity.status(200).body(deleteUser);
+        if(!deleteUser.getSuccess() && deleteUser.getMessage().equals("User not found")) {
+            return ResponseEntity.status(404).body(deleteUser);
         }
 
-        return ResponseEntity.status(404).body(deleteUser);
+        if(!deleteUser.getSuccess() && deleteUser.getMessage().equals("User cannot be removed because he has tasks assigned to him")) {
+            return ResponseEntity.status(409).body(deleteUser);
+        }
+
+        return ResponseEntity.status(200).body(deleteUser);
     }
 }

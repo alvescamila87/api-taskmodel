@@ -7,6 +7,10 @@ desc tb_task;
 select * from tb_user;
 select * from tb_task;
 
+insert into tb_user (name, email) values
+("Zebedeu Abraão", "zebedeu@gmail.com"),
+("Madalena Abraão", "madalena@gmail.com"),
+("João Abraão", "joao@gmail.com");
 
 insert into tb_task (date_task, description, status, title, user_id) values 
 ('2025/03/19', 'Description 1', 'OPEN', 'Task 1', 1),
