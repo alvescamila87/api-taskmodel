@@ -10,5 +10,5 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
 
     // criar método para buscar usuario por email e task
-    //List<TaskEntity> findTasksAndEmail (String email);
+    List<TaskEntity> findByUserEmail (String email);
 }

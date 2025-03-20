@@ -127,14 +127,14 @@ public class UserService {
 //            return responseUserDTO;
 //        }
 
-//        List<TaskEntity> listAllTasksByUser = taskRepository.findTasksAndEmail(email);
-//
-//        if(!listAllTasksByUser.isEmpty()) {
-//            return ResponseUserDTO.builder()
-//                    .message("User cannot be removed because he has tasks assigned to him")
-//                    .success(false)
-//                    .build();
-//        }
+        List<TaskEntity> listAllTasksByUser = taskRepository.findByUserEmail(email);
+
+        if(!listAllTasksByUser.isEmpty()) {
+            return ResponseUserDTO.builder()
+                    .message("User cannot be removed because he has tasks assigned to him")
+                    .success(false)
+                    .build();
+        }
 
         repository.delete(deleteUserEntity);
 

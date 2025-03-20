@@ -116,4 +116,10 @@ public class TaskService {
 
         repository.deleteById(id);
     }
+
+//    public Boolean findAllTasksByUserEmail(TaskDTO taskDTO) {
+//        List<TaskEntity> listAllTasksByUserEmail = repository.findByUserEmail(taskDTO.getUserEmail());
+//
+//        return !listAllTasksByUserEmail.isEmpty();
+//    }
 }
