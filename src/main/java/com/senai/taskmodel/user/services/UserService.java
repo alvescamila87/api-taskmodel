@@ -115,8 +115,6 @@ public class UserService {
                     .build();
         }
 
-        UserEntity deleteUserEntity = deleteUser.get();
-
         final var hasTaskRelated = taskRepository.existsByUserEmail(email);
 
         if(hasTaskRelated) {
@@ -126,6 +124,7 @@ public class UserService {
                     .build();
         }
 
+        UserEntity deleteUserEntity = deleteUser.get();
         repository.delete(deleteUserEntity);
 
         return ResponseUserDTO.builder()
