@@ -14,7 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder()
+@Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ResponseUserDTO {
 

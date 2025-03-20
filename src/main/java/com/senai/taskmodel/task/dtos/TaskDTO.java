@@ -14,7 +14,7 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@Builder(toBuilder = true)
+@Builder
 public class TaskDTO {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
