@@ -76,7 +76,7 @@ public class TaskController {
         ResponseTaskDTO responseTaskDTO = service.deleteTask(id);
 
         if(!responseTaskDTO.getSuccess()){
-            return ResponseEntity.status(204).body(responseTaskDTO);
+            return ResponseEntity.status(404).body(responseTaskDTO);
         }
 
         return ResponseEntity.ok().body(responseTaskDTO);
