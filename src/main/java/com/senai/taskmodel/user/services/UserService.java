@@ -82,7 +82,7 @@ public class UserService {
                 .name(userDTO.getName())
                 .email(userDTO.getEmail())
                 .success(true)
-                .message("User has been successfully created.")
+                .message("User has been created.")
                 .build();
     }
 
@@ -119,7 +119,7 @@ public class UserService {
         return ResponseUserDTO.builder()
                 .name(userDTO.getName())
                 .email(userDTO.getEmail())
-                .message("User has been successfully updated")
+                .message("User has been updated")
                 .success(true)
                 .build();
     }
@@ -148,7 +148,7 @@ public class UserService {
         repository.delete(deleteUserEntity);
 
         return ResponseUserDTO.builder()
-                .message("User has been successfully deleted")
+                .message("User has been deleted")
                 .success(true)
                 .build();
     }

@@ -108,7 +108,7 @@ public class TaskService {
                 .dateTask(taskDTO.getDateTask())
                 .status(taskDTO.getStatus())
                 .userEmail(userEntityEmail.get().getEmail())
-                .mensagem("Task has been successfully created")
+                .mensagem("Task has been created")
                 .success(true)
                 .build();
     }
@@ -159,7 +159,7 @@ public class TaskService {
                 .dateTask(taskDTO.getDateTask())
                 .status(taskDTO.getStatus())
                 .userEmail(userEntityEmail.get().getEmail())
-                .mensagem("Task has been successfully updated")
+                .mensagem("Task has been updated")
                 .success(true)
                 .build();
     }
@@ -176,6 +176,12 @@ public class TaskService {
         }
 
         repository.deleteById(id);
+
+        return ResponseTaskDTO
+                .builder()
+                .mensagem("Task has been deleted")
+                .success(true)
+                .build();
     }
 
 //    public Boolean findAllTasksByUserEmail(TaskDTO taskDTO) {
