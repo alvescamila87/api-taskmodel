@@ -82,7 +82,7 @@ public class UserService {
                 .name(userDTO.getName())
                 .email(userDTO.getEmail())
                 .success(true)
-                .message("User has been successfully registered.")
+                .message("User has been successfully created.")
                 .build();
     }
 

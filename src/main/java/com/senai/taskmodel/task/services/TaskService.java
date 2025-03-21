@@ -82,14 +82,6 @@ public class TaskService {
                     .build();
         }
 
-//        if(hasTaskTheSameDate(taskDTO)){
-//            return ResponseTaskDTO
-//                    .builder()
-//                    .mensagem("There is another task on the same date")
-//                    .success(false)
-//                    .build();
-//        }
-
         if(hasTaskTheSameDate2(taskDTO)){
             return ResponseTaskDTO
                     .builder()
@@ -116,7 +108,7 @@ public class TaskService {
                 .dateTask(taskDTO.getDateTask())
                 .status(taskDTO.getStatus())
                 .userEmail(userEntityEmail.get().getEmail())
-                .mensagem("Task has been updated successfully")
+                .mensagem("Task has been successfully created")
                 .success(true)
                 .build();
     }
@@ -126,13 +118,29 @@ public class TaskService {
         Optional<TaskEntity> updateTaskEntityById = repository.findById(id);
 
         if(updateTaskEntityById.isEmpty()) {
-            return null;
+            return ResponseTaskDTO
+                    .builder()
+                    .mensagem("Task not found")
+                    .success(false)
+                    .build();
         }
 
         Optional<UserEntity> userEntityEmail = userRepository.findByEmail(taskDTO.getUserEmail());
 
         if(userEntityEmail.isEmpty()) {
-            return null;
+            return ResponseTaskDTO
+                    .builder()
+                    .mensagem("User not found")
+                    .success(false)
+                    .build();
+        }
+
+        if(hasTaskTheSameDate2(taskDTO)) {
+            return ResponseTaskDTO
+                    .builder()
+                    .mensagem("There is another task on the same date")
+                    .success(false)
+                    .build();
         }
 
         TaskEntity updateTaskEntity = updateTaskEntityById.get();
@@ -141,7 +149,6 @@ public class TaskService {
         updateTaskEntity.setDateTask(taskDTO.getDateTask());
         updateTaskEntity.setStatus(taskDTO.getStatus());
         updateTaskEntity.setUser(userEntityEmail.get());
-
 
         repository.save(updateTaskEntity);
 
@@ -152,14 +159,20 @@ public class TaskService {
                 .dateTask(taskDTO.getDateTask())
                 .status(taskDTO.getStatus())
                 .userEmail(userEntityEmail.get().getEmail())
+                .mensagem("Task has been successfully updated")
+                .success(true)
                 .build();
     }
 
-    public void deleteTask(Long id) {
+    public ResponseTaskDTO deleteTask(Long id) {
         Optional<TaskEntity> taskEntityId = repository.findById(id);
 
         if(taskEntityId.isEmpty()) {
-            return;
+            return ResponseTaskDTO
+                    .builder()
+                    .mensagem("Task not found")
+                    .success(false)
+                    .build();
         }
 
         repository.deleteById(id);
@@ -171,17 +184,17 @@ public class TaskService {
 //        return !listAllTasksByUserEmail.isEmpty();
 //    }
 
-    private Boolean hasTaskTheSameDate(TaskDTO taskDTO) {
-        List<TaskEntity> listTasksEntity = repository.findByUserEmail(taskDTO.getUserEmail());
-
-        for(TaskEntity taskEntity : listTasksEntity) {
-            if(taskEntity.getDateTask().equals(taskDTO.getDateTask())) {
-                return true;
-            }
-        }
-
-        return false;
-    }
+//    private Boolean hasTaskTheSameDate(TaskDTO taskDTO) {
+//        List<TaskEntity> listTasksEntity = repository.findByUserEmail(taskDTO.getUserEmail());
+//
+//        for(TaskEntity taskEntity : listTasksEntity) {
+//            if(taskEntity.getDateTask().equals(taskDTO.getDateTask())) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
 
     private Boolean hasTaskTheSameDate2(TaskDTO taskDTO) {
         List<TaskEntity> listTaskEntity = repository.findByDateTaskAndUserEmail(taskDTO.getDateTask(), taskDTO.getUserEmail());

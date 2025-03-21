@@ -55,6 +55,19 @@ public class TaskController {
     @PutMapping("/{id}")
     public ResponseEntity<ResponseTaskDTO> updateTask(@PathVariable Long id, @RequestBody @Valid TaskDTO taskDTO){
         ResponseTaskDTO updateTask = service.updateTask(id, taskDTO);
+
+        if(!updateTask.getSuccess() && updateTask.getMensagem().equals("Task not found")) {
+            return ResponseEntity.status(404).body(updateTask);
+        }
+
+        if(!updateTask.getSuccess() && updateTask.getMensagem().equals("User not found")) {
+            return ResponseEntity.status(404).body(updateTask);
+        }
+
+        if(!updateTask.getSuccess() && updateTask.getMensagem().equals("There is another task on the same date")) {
+            return ResponseEntity.status(409).body(updateTask);
+        }
+
         return ResponseEntity.ok().body(updateTask);
     }
 
