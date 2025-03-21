@@ -56,7 +56,6 @@ public class UserService {
                 .builder()
                 .name(userEntity.get().getName())
                 .email(userEntity.get().getEmail())
-                //.message("User not found")
                 .success(true)
                 .build();
     }

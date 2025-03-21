@@ -1,6 +1,5 @@
 package com.senai.taskmodel.task.controllers;
 
-import com.senai.taskmodel.task.dtos.MensagemDTO;
 import com.senai.taskmodel.task.dtos.ResponseTaskDTO;
 import com.senai.taskmodel.task.dtos.TaskDTO;
 import com.senai.taskmodel.task.services.TaskService;
@@ -41,6 +40,15 @@ public class TaskController {
 
     @PostMapping ResponseEntity<ResponseTaskDTO> createTask(@RequestBody @Valid TaskDTO taskDTO) {
         ResponseTaskDTO newTask = service.createTask(taskDTO);
+
+        if(!newTask.getSuccess() && newTask.getMensagem().equals("User not found")) {
+            return ResponseEntity.status(404).body(newTask);
+        }
+
+        if(!newTask.getSuccess() && newTask.getMensagem().equals("There is another task on the same date")) {
+            return ResponseEntity.status(409).body(newTask);
+        }
+
         return ResponseEntity.ok().body(newTask);
     }
 

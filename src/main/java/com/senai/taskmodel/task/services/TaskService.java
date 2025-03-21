@@ -1,20 +1,17 @@
 package com.senai.taskmodel.task.services;
 
-import com.senai.taskmodel.task.dtos.MensagemDTO;
 import com.senai.taskmodel.task.dtos.ResponseTaskDTO;
 import com.senai.taskmodel.task.dtos.TaskDTO;
 import com.senai.taskmodel.task.entities.TaskEntity;
-import com.senai.taskmodel.task.enums.EnumStatus;
 import com.senai.taskmodel.task.repositories.TaskRepository;
 import com.senai.taskmodel.user.entities.UserEntity;
 import com.senai.taskmodel.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -78,7 +75,27 @@ public class TaskService {
         Optional<UserEntity> userEntityEmail = userRepository.findByEmail(taskDTO.getUserEmail());
 
         if(userEntityEmail.isEmpty()) {
-            return null;
+            return ResponseTaskDTO
+                    .builder()
+                    .mensagem("User not found")
+                    .success(false)
+                    .build();
+        }
+
+//        if(hasTaskTheSameDate(taskDTO)){
+//            return ResponseTaskDTO
+//                    .builder()
+//                    .mensagem("There is another task on the same date")
+//                    .success(false)
+//                    .build();
+//        }
+
+        if(hasTaskTheSameDate2(taskDTO)){
+            return ResponseTaskDTO
+                    .builder()
+                    .mensagem("There is another task on the same date")
+                    .success(false)
+                    .build();
         }
 
         TaskEntity newTaskEntity = TaskEntity
@@ -99,9 +116,11 @@ public class TaskService {
                 .dateTask(taskDTO.getDateTask())
                 .status(taskDTO.getStatus())
                 .userEmail(userEntityEmail.get().getEmail())
+                .mensagem("Task has been updated successfully")
+                .success(true)
                 .build();
     }
-    
+
     public ResponseTaskDTO updateTask(Long id, TaskDTO taskDTO) {
 
         Optional<TaskEntity> updateTaskEntityById = repository.findById(id);
@@ -151,4 +170,22 @@ public class TaskService {
 //
 //        return !listAllTasksByUserEmail.isEmpty();
 //    }
+
+    private Boolean hasTaskTheSameDate(TaskDTO taskDTO) {
+        List<TaskEntity> listTasksEntity = repository.findByUserEmail(taskDTO.getUserEmail());
+
+        for(TaskEntity taskEntity : listTasksEntity) {
+            if(taskEntity.getDateTask().equals(taskDTO.getDateTask())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private Boolean hasTaskTheSameDate2(TaskDTO taskDTO) {
+        List<TaskEntity> listTaskEntity = repository.findByDateTaskAndUserEmail(taskDTO.getDateTask(), taskDTO.getUserEmail());
+
+        return !listTaskEntity.isEmpty();
+    }
 }
