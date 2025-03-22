@@ -1,6 +1,5 @@
 package com.senai.taskmodel.user.services;
 
-import com.senai.taskmodel.task.entities.TaskEntity;
 import com.senai.taskmodel.task.repositories.TaskRepository;
 import com.senai.taskmodel.user.dtos.ResponseUserDTO;
 import com.senai.taskmodel.user.dtos.UserDTO;
@@ -88,7 +87,7 @@ public class UserService {
 
     public ResponseUserDTO updateUser(String email, UserDTO userDTO){
 
-        Optional<UserEntity> userEntityEmailSearch = repository.findByEmail(email); //e-mail 1 m@e-mail
+        Optional<UserEntity> userEntityEmailSearch = repository.findByEmail(email);
 
         if(userEntityEmailSearch.isEmpty()) {
             return ResponseUserDTO.builder()
@@ -97,12 +96,11 @@ public class UserService {
                     .build();
         }
 
-        Optional<UserEntity> userEntityEmailDTO = repository.findByEmail(userDTO.getEmail()); //e-mail 2 s@e-mail
+        Optional<UserEntity> userEntityEmailDTO = repository.findByEmail(userDTO.getEmail());
 
-        if(userEntityEmailDTO.isPresent()) { //e-mail 2 sendo utilizado para outro e-usuário
-            //lógica e-mail igual e id
+        if(userEntityEmailDTO.isPresent()) {
 
-            if(!userEntityEmailSearch.get().getId().equals(userEntityEmailDTO.get().getId())) { // email 2 é do mesmo usuário via id
+            if(!userEntityEmailSearch.get().getId().equals(userEntityEmailDTO.get().getId())) {
                 return ResponseUserDTO.builder()
                         .message("The email is already in use.")
                         .success(false)

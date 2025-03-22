@@ -33,14 +33,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/user/joao@gmail.com",
+							"raw": "localhost:8080/user/zebedeu@gmail.com",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"user",
-								"joao@gmail.com"
+								"zebedeu@gmail.com"
 							]
 						}
 					},
@@ -53,7 +53,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"João Batista\",\r\n    \"email\": \"joao.batista@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Pedro Apóstolo\",\r\n    \"email\": \"pedro@gmail.com\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -178,7 +178,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Construction of Noah's Ark\",\r\n    \"description\": \"Build the ark to save the animals from the flood.\",\r\n    \"dateTask\": \"2025-03-01\",\r\n    \"status\": \"OPEN\",\r\n    \"userEmail\": \"noe@gmail.com\"\r\n}\r\n",
+							"raw": "{\r\n    \"title\": \"Construction of Noah's Ark\",\r\n    \"description\": \"Build the ark to save the animals from the flood.\",\r\n    \"dateTask\": \"2025-03-02\",\r\n    \"status\": \"OPEN\",\r\n    \"userEmail\": \"noe@gmail.com\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"

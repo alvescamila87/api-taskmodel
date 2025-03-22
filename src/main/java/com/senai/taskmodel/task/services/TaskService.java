@@ -7,7 +7,6 @@ import com.senai.taskmodel.task.repositories.TaskRepository;
 import com.senai.taskmodel.user.entities.UserEntity;
 import com.senai.taskmodel.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -82,7 +81,7 @@ public class TaskService {
                     .build();
         }
 
-        if(hasTaskTheSameDate2(taskDTO)){
+        if(hasTaskTheSameDate(taskDTO)){
             return ResponseTaskDTO
                     .builder()
                     .mensagem("There is another task on the same date")
@@ -135,7 +134,7 @@ public class TaskService {
                     .build();
         }
 
-        if(hasTaskTheSameDate2(taskDTO)) {
+        if(hasTaskTheSameDate(taskDTO)) {
             return ResponseTaskDTO
                     .builder()
                     .mensagem("There is another task on the same date")
@@ -184,25 +183,8 @@ public class TaskService {
                 .build();
     }
 
-//    public Boolean findAllTasksByUserEmail(TaskDTO taskDTO) {
-//        List<TaskEntity> listAllTasksByUserEmail = repository.findByUserEmail(taskDTO.getUserEmail());
-//
-//        return !listAllTasksByUserEmail.isEmpty();
-//    }
 
-//    private Boolean hasTaskTheSameDate(TaskDTO taskDTO) {
-//        List<TaskEntity> listTasksEntity = repository.findByUserEmail(taskDTO.getUserEmail());
-//
-//        for(TaskEntity taskEntity : listTasksEntity) {
-//            if(taskEntity.getDateTask().equals(taskDTO.getDateTask())) {
-//                return true;
-//            }
-//        }
-//
-//        return false;
-//    }
-
-    private Boolean hasTaskTheSameDate2(TaskDTO taskDTO) {
+    private Boolean hasTaskTheSameDate(TaskDTO taskDTO) {
         List<TaskEntity> listTaskEntity = repository.findByDateTaskAndUserEmail(taskDTO.getDateTask(), taskDTO.getUserEmail());
 
         return !listTaskEntity.isEmpty();

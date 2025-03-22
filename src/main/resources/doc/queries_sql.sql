@@ -23,7 +23,7 @@ insert into tb_user (name, email) values
 ("João Abraão", "joao@gmail.com");
 
 insert into tb_task (date_task, description, status, title, user_id) values 
-('2025/03/01', 'Build the ark', 'OPEN', 'Construction of Noah\'s Ark', 3),
+('2025/03/01', 'Build the ark', 'OPEN', 'Construction of Noahs Ark', 3),
 ('2025/03/02', 'Sacrifice Isaac', 'IN_PROGRESS', 'Sacrifice of Isaac', 4),
 ('2025/03/03', 'Free the people from Egypt', 'OPEN', 'Exodus from Egypt', 5),
 ('2025/03/04', 'Unite the tribes of Israel', 'OPEN', 'United Kingdom of Israel', 6),
