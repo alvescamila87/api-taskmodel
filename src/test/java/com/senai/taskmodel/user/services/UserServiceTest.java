@@ -1,51 +1,49 @@
 package com.senai.taskmodel.user.services;
 
+import com.senai.taskmodel.user.dtos.ResponseUserDTO;
 import com.senai.taskmodel.user.entities.UserEntity;
 import com.senai.taskmodel.user.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
-@DataJpaTest
+@ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
 
-    @Autowired
+    @Mock
     UserRepository repository;
 
-    private final String USER_DEFAULT_NAME = "João Batista";
-    private final String USER_DEFAULT_EMAIL = "joao@gmail.com";
+    @InjectMocks
+    UserService service;
+
+    private final String USER_DEFAULT_NAME = "King David";
+    private final String USER_DEFAULT_EMAIL = "david@gmail.com";
 
     @Test
-    void when_save_user() {
+    void when_find_user_by_email_then_return_user() {
+
         UserEntity userEntity = UserEntity
                 .builder()
                 .name(USER_DEFAULT_NAME)
                 .email(USER_DEFAULT_EMAIL)
                 .build();
 
-        UserEntity newUser = repository.save(userEntity);
+        when(repository.findByEmail(USER_DEFAULT_EMAIL)).thenReturn(Optional.of(userEntity));
 
-        assertNotNull(newUser.getId());
-        assertEquals(USER_DEFAULT_NAME, newUser.getName());
+        ResponseUserDTO userByEmail = service.getUserByEmail(USER_DEFAULT_EMAIL);
+
+        assertNotNull(userByEmail);
+        assertEquals(USER_DEFAULT_NAME, userByEmail.getName());
+
+        verify(repository, times(1)).findByEmail(USER_DEFAULT_EMAIL);
     }
 
-    @Test
-    void when_find_user_by_email_() {
-        UserEntity userEntity = UserEntity
-                .builder()
-                .name(USER_DEFAULT_NAME)
-                .email(USER_DEFAULT_EMAIL)
-                .build();
-
-        repository.save(userEntity);
-
-        Optional<UserEntity> userByEmail = repository.findByEmail(USER_DEFAULT_EMAIL);
-
-        assertTrue(userByEmail.isPresent());
-        assertEquals(USER_DEFAULT_NAME, userByEmail.get().getName());
-    }
 }

@@ -39,7 +39,7 @@ public class UserService {
         return listUsers;
     }
 
-    public ResponseUserDTO getUserById(String email) {
+    public ResponseUserDTO getUserByEmail(String email) {
         Optional<UserEntity> userEntity = repository.findByEmail(email);
 
         if(userEntity.isEmpty()) {
