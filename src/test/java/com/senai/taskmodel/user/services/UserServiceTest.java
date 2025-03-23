@@ -160,4 +160,123 @@ public class UserServiceTest {
         verify(repository, times(1)).findByEmail(USER_DEFAULT_EMAIL);
     }
 
+    @Test
+    void when_update_user_then_return_user_updated() {
+        UserDTO updateUserDTO = UserDTO
+                .builder()
+                .name("David King")
+                .email(USER_DEFAULT_EMAIL)
+                .build();
+
+        UserEntity updateUserEntity =  UserEntity
+                .builder()
+                .id(USER_DEFAULT_ID)
+                .name(USER_DEFAULT_NAME)
+                .email(USER_DEFAULT_EMAIL)
+                .build();
+
+        when(repository.findByEmail(USER_DEFAULT_EMAIL)).thenReturn(Optional.of(updateUserEntity));
+
+        ResponseUserDTO responseUserDTO = service.updateUser(USER_DEFAULT_EMAIL, updateUserDTO);
+
+        assertNotNull(responseUserDTO);
+        assertEquals("David King", responseUserDTO.getName());
+        assertEquals(USER_DEFAULT_EMAIL, responseUserDTO.getEmail());
+        assertEquals("User has been updated", responseUserDTO.getMessage());
+        assertTrue(responseUserDTO.getSuccess());
+
+        verify(repository, times(2)).findByEmail(USER_DEFAULT_EMAIL);
+        verify(repository, times(1)).save(any(UserEntity.class));
+    }
+
+    @Test
+    void when_update_user_with_wrong_email_then_return_not_found() {
+
+        UserDTO updateUserDTO = UserDTO
+                .builder()
+                .name("Not exist")
+                .email("not_existing_email@gmail.com")
+                .build();
+
+        when(repository.findByEmail(updateUserDTO.getEmail())).thenReturn(Optional.empty());
+
+        ResponseUserDTO updateUserByEmail = service.getUserByEmail("not_existing_email@gmail.com");
+
+        assertNotNull(updateUserByEmail);
+        assertEquals("User not found", updateUserByEmail.getMessage());
+        assertFalse(updateUserByEmail.getSuccess());
+
+        verify(repository, times(1)).findByEmail("not_existing_email@gmail.com");
+    }
+
+    @Test
+    void when_update_user_with_existing_email_and_different_id_then_return_messagem() {
+
+        UserDTO updateUserDTO = UserDTO
+                .builder()
+                .name("Rei Davi Salomão")
+                .email("salomao@gmail.com")
+                .build();
+
+        UserEntity existingUser = UserEntity
+                .builder()
+                .id(USER_DEFAULT_ID)
+                .name(USER_DEFAULT_NAME)
+                .email(USER_DEFAULT_EMAIL)
+                .build();
+
+        UserEntity userWithTheSameEmail = UserEntity
+                .builder()
+                .id(2L)
+                .name("Salomão Sucessor")
+                .email("salomao@gmail.com")
+                .build();
+
+        when(repository.findByEmail(USER_DEFAULT_EMAIL)).thenReturn(Optional.of(existingUser));
+
+        when(repository.findByEmail("salomao@gmail.com")).thenReturn(Optional.of(userWithTheSameEmail));
+
+        ResponseUserDTO responseUserDTO = service.updateUser(USER_DEFAULT_EMAIL, updateUserDTO);
+
+        assertNotNull(responseUserDTO);
+        assertEquals("The email is already in use.", responseUserDTO.getMessage());
+        assertFalse(responseUserDTO.getSuccess());
+
+        verify(repository, times(1)).findByEmail(USER_DEFAULT_EMAIL);
+        verify(repository, times(1)).findByEmail("salomao@gmail.com");
+        verify(repository, never()).save(any(UserEntity.class));
+    }
+
+    @Test
+    void when_update_user_with_existing_email_and_same_id_then_return_messagem() {
+
+        UserEntity existingUser = UserEntity
+                .builder()
+                .id(USER_DEFAULT_ID)
+                .name(USER_DEFAULT_NAME)
+                .email(USER_DEFAULT_EMAIL)
+                .build();
+
+        UserDTO updateUser = UserDTO
+                .builder()
+                .name("Rei Davi Salomão")
+                .email("salomao@gmail.com")
+                .build();
+
+        when(repository.findByEmail(USER_DEFAULT_EMAIL)).thenReturn(Optional.of(existingUser));
+
+        when(repository.findByEmail("salomao@gmail.com")).thenReturn(Optional.empty());
+
+        ResponseUserDTO responseUserDTO = service.updateUser(USER_DEFAULT_EMAIL, updateUser);
+
+        assertNotNull(responseUserDTO);
+        assertEquals("Rei Davi Salomão", responseUserDTO.getName());
+        assertEquals("salomao@gmail.com", responseUserDTO.getEmail());
+        assertEquals("User has been updated", responseUserDTO.getMessage());
+        assertTrue(responseUserDTO.getSuccess());
+
+        verify(repository, times(1)).findByEmail(USER_DEFAULT_EMAIL);
+        verify(repository, times(1)).findByEmail("salomao@gmail.com");
+        verify(repository, times(1)).save(any(UserEntity.class));
+    }
 }
