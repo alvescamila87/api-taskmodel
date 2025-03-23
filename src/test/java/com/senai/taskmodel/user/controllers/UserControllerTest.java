@@ -202,27 +202,62 @@ public class UserControllerTest {
     }
 
     @Test
-    void when_update_user_with_the_same_email_in_use() {
+    void when_delete_user_by_email_then_return_successfully() {
         ResponseUserDTO responseUserDTO = ResponseUserDTO
                 .builder()
-                .name(USER_DEFAULT_NAME)
+                .name("Not exist user")
                 .email("not_exist_email@gmail.com")
+                .message("User not found")
                 .success(false)
                 .build();
 
-        when(service.getUserByEmail("not_exist_email@gmail.com")).thenReturn(responseUserDTO);
+        when(service.deleteUser("not_exist_email@gmail.com")).thenReturn(responseUserDTO);
 
-        when(service.updateUser(eq("not_exist_email@gmail.com"), any(UserDTO.class))).thenReturn(responseUserDTO);
+        ResponseEntity<ResponseUserDTO> deleteUser = controller.deleteUser(responseUserDTO.getEmail());
 
-        UserDTO userDTO = UserDTO
+        assertEquals(HttpStatus.NOT_FOUND, deleteUser.getStatusCode());
+        assertFalse(responseUserDTO.getSuccess());
+        assertEquals("User not found", deleteUser.getBody().getMessage());
+
+    }
+
+    @Test
+    void when_delete_user_with_wrong_email_then_return_not_found() {
+        ResponseUserDTO responseUserDTO = ResponseUserDTO
                 .builder()
                 .name(USER_DEFAULT_NAME)
-                .email("not_exist_email@gmail.com")
+                .email(USER_DEFAULT_EMAIL)
+                .message("User has been deleted")
+                .success(false)
                 .build();
 
-        ResponseEntity<ResponseUserDTO> newUser = controller.updateUser("not_exist_email@gmail.com", userDTO);
+        when(service.deleteUser("not_exist_email@gmail.com")).thenReturn(responseUserDTO);
 
-        assertEquals(HttpStatus.NOT_FOUND, newUser.getStatusCode());
-        assertFalse(newUser.getBody().getSuccess());
+        ResponseEntity<ResponseUserDTO> deleteUser = controller.deleteUser(responseUserDTO.getEmail());
+
+        assertEquals(HttpStatus.NOT_FOUND, deleteUser.getStatusCode());
+        assertFalse(responseUserDTO.getSuccess());
+        assertEquals("User not found", deleteUser.getBody().getMessage());
+
     }
+
+    @Test
+    void when_delete_user_with_tasks_related_then_return_message() {
+        ResponseUserDTO responseUserDTO = ResponseUserDTO
+                .builder()
+                .name(USER_DEFAULT_NAME)
+                .email(USER_DEFAULT_EMAIL)
+                .message("User has been deleted")
+                .success(true)
+                .build();
+
+        when(service.deleteUser(USER_DEFAULT_EMAIL)).thenReturn(responseUserDTO);
+
+        ResponseEntity<ResponseUserDTO> deleteUser = controller.deleteUser(USER_DEFAULT_EMAIL);
+
+        assertEquals(HttpStatus.OK, deleteUser.getStatusCode());
+        assertTrue(responseUserDTO.getSuccess());
+        assertEquals("User has been deleted", deleteUser.getBody().getMessage());
+    }
+
 }
