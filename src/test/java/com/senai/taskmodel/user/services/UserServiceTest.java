@@ -1,5 +1,6 @@
 package com.senai.taskmodel.user.services;
 
+import com.senai.taskmodel.task.repositories.TaskRepository;
 import com.senai.taskmodel.user.dtos.ResponseUserDTO;
 import com.senai.taskmodel.user.dtos.UserDTO;
 import com.senai.taskmodel.user.entities.UserEntity;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,9 @@ public class UserServiceTest {
 
     @Mock
     UserRepository repository;
+
+    @Mock
+    TaskRepository taskRepository;
 
     @InjectMocks
     UserService service;
@@ -200,7 +205,7 @@ public class UserServiceTest {
 
         when(repository.findByEmail(updateUserDTO.getEmail())).thenReturn(Optional.empty());
 
-        ResponseUserDTO updateUserByEmail = service.getUserByEmail("not_existing_email@gmail.com");
+        ResponseUserDTO updateUserByEmail = service.updateUser("not_existing_email@gmail.com", updateUserDTO);
 
         assertNotNull(updateUserByEmail);
         assertEquals("User not found", updateUserByEmail.getMessage());
@@ -279,4 +284,79 @@ public class UserServiceTest {
         verify(repository, times(1)).findByEmail("salomao@gmail.com");
         verify(repository, times(1)).save(any(UserEntity.class));
     }
+
+
+    @Test
+    void when_delete_user_with_existing_email_then_return_success_message(){
+
+        UserEntity deleteUser = UserEntity
+                .builder()
+                .id(USER_DEFAULT_ID)
+                .name(USER_DEFAULT_NAME)
+                .email(USER_DEFAULT_EMAIL)
+                .build();
+
+        when(repository.findByEmail(USER_DEFAULT_EMAIL)).thenReturn(Optional.of(deleteUser));
+
+        when(taskRepository.existsByUserEmail(USER_DEFAULT_EMAIL)).thenReturn(false);
+
+        ResponseUserDTO responseUserDTO = service.deleteUser(USER_DEFAULT_EMAIL);
+
+        assertNotNull(responseUserDTO);
+        assertEquals("User has been deleted", responseUserDTO.getMessage());
+        assertTrue(responseUserDTO.getSuccess());
+
+        verify(repository, times(1)).findByEmail(USER_DEFAULT_EMAIL);
+        verify(taskRepository, times(1)).existsByUserEmail(USER_DEFAULT_EMAIL);
+        verify(repository, times(1)).delete(deleteUser);
+
+    }
+
+    @Test
+    void when_delete_user_with_existing_email_then_return_tasks_related_message(){
+
+        UserEntity deleteUser = UserEntity
+                .builder()
+                .id(USER_DEFAULT_ID)
+                .name(USER_DEFAULT_NAME)
+                .email(USER_DEFAULT_EMAIL)
+                .build();
+
+        when(repository.findByEmail(USER_DEFAULT_EMAIL)).thenReturn(Optional.of(deleteUser));
+
+        when(taskRepository.existsByUserEmail(USER_DEFAULT_EMAIL)).thenReturn(true);
+
+        ResponseUserDTO responseUserDTO = service.deleteUser(USER_DEFAULT_EMAIL);
+
+        assertNotNull(responseUserDTO);
+        assertEquals("User cannot be removed because he has tasks assigned to him", responseUserDTO.getMessage());
+        assertFalse(responseUserDTO.getSuccess());
+
+        verify(repository, times(1)).findByEmail(USER_DEFAULT_EMAIL);
+        verify(taskRepository, times(1)).existsByUserEmail(USER_DEFAULT_EMAIL);
+    }
+
+    @Test
+    void when_delete_user_with_wrong_email_then_return_not_found() {
+
+        UserEntity deleteUser = UserEntity
+                .builder()
+                .name(USER_DEFAULT_NAME)
+                .email("not_exist@gmail.com")
+                .build();
+
+        when(repository.findByEmail(deleteUser.getEmail())).thenReturn(Optional.empty());
+
+        ResponseUserDTO responseUserDTO = service.deleteUser("not_exist@gmail.com");
+
+        assertNotNull(responseUserDTO);
+        assertNull(null, responseUserDTO.getName());
+        assertNull(null, responseUserDTO.getEmail());
+        assertEquals("User not found", responseUserDTO.getMessage());
+        assertFalse(responseUserDTO.getSuccess());
+
+        verify(repository, times(1)).findByEmail(("not_exist@gmail.com"));
+
+    }
+
 }
