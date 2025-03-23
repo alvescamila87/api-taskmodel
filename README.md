@@ -7,11 +7,16 @@ It aims to create an application to manage tasks using **Java Spring Boot** e **
 - **Java 17**
 - **Spring Boot**
 - **MariaDB**
+- **JUnit 5**
+- **Mockito**
+- **H2 Database**
 
 ## 📂 Features
 - Create, update, list and delete tasks.
 - Organize and manage tasks by status (pending, in progress, cancelled and concluded).
 - Data persistence with MariaDB.
+- Unit testing with JUnit and Mockito
+- Environment-based database configurations.
 
 ## 🏗️ Project structure
 
@@ -33,18 +38,24 @@ It aims to create an application to manage tasks using **Java Spring Boot** e **
 │   │   │           │   ├── dtos
 │   │   │           │   ├── entities
 │   │   │           │   ├── repositories
-│   │   │           │   └── services
-│   │   │           │   └── enums
+│   │   │           │   ├── services
+│   │   │           │   ├── enums
 │   │   │           └── user
 │   │   │               ├── controllers
 │   │   │               ├── dtos
 │   │   │               ├── entities
 │   │   │               ├── repositories
-│   │   │               └── services
+│   │   │               ├── services
 │   │   └── resources
-│   │       └── application.properties
-│   │       └── application-dev.properties
-│   │       └── application-prod.properties
+│   │       ├── application.properties
+│   │       ├── application-dev.properties
+│   │       ├── application-prod.properties
+│   ├── test
+│   │   ├── java
+│   │   │   └── com
+│   │   │       └── senai
+│   │   │           ├── task
+│   │   │           ├── user
 ```
 
 ## ⚙️ Database configuration
