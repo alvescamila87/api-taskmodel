@@ -90,7 +90,22 @@ public class TaskRepositoryTest {
     }
 
     @Test
-    void when_find_tasks_related_by_user_email_and_date_then_return_list() {
+    void when_check_if_not_exist_task_related_by_user_email_then_return_false() {
+        UserEntity userEntity = UserEntity
+                .builder()
+                .name(USER_DEFAULT_NAME)
+                .email(USER_DEFAULT_USER_EMAIL)
+                .build();
+
+        userRepository.save(userEntity);
+
+        Boolean hasTasksRelated = repository.existsByUserEmail(USER_DEFAULT_USER_EMAIL);
+
+        assertFalse(hasTasksRelated);
+    }
+
+    @Test
+    void when_find_tasks_related_by_user_email_and_date_in_the_same_date_then_return_list() {
         UserEntity userEntity = UserEntity
                 .builder()
                 .name(USER_DEFAULT_NAME)
@@ -119,6 +134,22 @@ public class TaskRepositoryTest {
         assertEquals(USER_DEFAULT_STATUS, newTask.getStatus());
         assertEquals(USER_DEFAULT_TASK_DATE, newTask.getDateTask());
         assertEquals(userEntity, newTask.getUser());
+    }
+
+    @Test
+    void when_find_tasks_related_by_user_email_and_date_in_the_same_date_then_return_empty_list() {
+        UserEntity userEntity = UserEntity
+                .builder()
+                .name(USER_DEFAULT_NAME)
+                .email(USER_DEFAULT_USER_EMAIL)
+                .build();
+
+        userRepository.save(userEntity);
+
+        List<TaskEntity> listTask = repository.findByDateTaskAndUserEmail(USER_DEFAULT_TASK_DATE, USER_DEFAULT_USER_EMAIL);
+
+        assertNotNull(listTask);
+        assertEquals(0, listTask.size());
     }
 
 }
