@@ -10,8 +10,6 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
 
-    List<TaskEntity> findByUserEmail(String email);
-
     List<TaskEntity> findByDateTaskAndUserEmail(LocalDate dataTask, String email);
 
     Boolean existsByUserEmail(String email);
