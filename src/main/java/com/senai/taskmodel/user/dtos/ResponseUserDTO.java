@@ -2,6 +2,7 @@ package com.senai.taskmodel.user.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.senai.taskmodel.user.entities.UserEntity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
@@ -24,4 +25,12 @@ public class ResponseUserDTO {
 
     @JsonIgnore
     private Boolean success;
+
+    public static ResponseUserDTO convertToDTO(UserEntity userEntity) {
+        return ResponseUserDTO
+                .builder()
+                .name(userEntity.getName())
+                .email(userEntity.getEmail())
+                .build();
+    }
 }

@@ -1,5 +1,6 @@
 package com.senai.taskmodel.user.dtos;
 
+import com.senai.taskmodel.user.entities.UserEntity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
@@ -16,4 +17,12 @@ public class UserDTO {
 
     @Email(message = "The email provided is not valid")
     private String email;
+
+    public static UserDTO convertToDTO(UserEntity userEntity) {
+        return UserDTO
+                .builder()
+                .name(userEntity.getName())
+                .email(userEntity.getEmail())
+                .build();
+    }
 }

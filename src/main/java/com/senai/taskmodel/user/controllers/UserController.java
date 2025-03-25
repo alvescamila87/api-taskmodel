@@ -5,6 +5,8 @@ import com.senai.taskmodel.user.dtos.UserDTO;
 import com.senai.taskmodel.user.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +18,12 @@ public class UserController {
 
     @Autowired
     UserService service;
+
+    @GetMapping
+    public ResponseEntity<Page<ResponseUserDTO>> getAllUsers(Pageable pageable) {
+        Page<ResponseUserDTO> pageUserDTO = service.getUsers(pageable);
+        return ResponseEntity.ok().body(pageUserDTO);
+    }
 
     @GetMapping
     public ResponseEntity<List<ResponseUserDTO>> listAllUsers() {
