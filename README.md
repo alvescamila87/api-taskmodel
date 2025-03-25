@@ -71,7 +71,7 @@ spring.datasource.password=your_password
 spring.jpa.hibernate.ddl-auto=update
 ```
 
-## 🚀 How to run the roject
+## 🚀 How to run the project
 
 1. Clone this repository:
 ```bash

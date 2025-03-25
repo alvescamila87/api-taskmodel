@@ -9,6 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
@@ -38,6 +42,44 @@ public class UserControllerTest {
 
     private final String USER_DEFAULT_NAME = "Rei Davi";
     private final String USER_DEFAULT_EMAIL = "davi@gmail.com";
+
+    @Test
+    void when_return_user_list_pageable_success() throws Exception {
+        ResponseUserDTO responseUserDTO = ResponseUserDTO
+                .builder()
+                .name(USER_DEFAULT_NAME)
+                .email(USER_DEFAULT_EMAIL)
+                .build();
+
+        List<ResponseUserDTO> userDTOList = List.of(responseUserDTO);
+        Page<ResponseUserDTO> userDTOPage = new PageImpl<>(userDTOList);
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(service.getUsers(pageable)).thenReturn(userDTOPage);
+
+        ResponseEntity<Page<ResponseUserDTO>> responseEntity = controller.getAllUsers(pageable);
+        Page<ResponseUserDTO> responseUserDTOPage = responseEntity.getBody();
+
+        assertNotNull(responseUserDTOPage);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertEquals(1, responseUserDTOPage.getTotalElements());
+        assertEquals(1, responseUserDTOPage.getContent().size());
+        assertEquals(USER_DEFAULT_NAME, responseUserDTOPage.getContent().get(0).getName());
+        assertEquals(USER_DEFAULT_EMAIL, responseUserDTOPage.getContent().get(0).getEmail());
+    }
+
+    @Test
+    void when_page_is_empty_in_paginator() {
+        Pageable pageable = PageRequest.of(0, 10);
+        when(service.getUsers(pageable)).thenReturn(Page.empty());
+
+        ResponseEntity<Page<ResponseUserDTO>> responseEntity = controller.getAllUsers(pageable);
+        Page<ResponseUserDTO> responsePageDTO = responseEntity.getBody();
+
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertTrue(responsePageDTO.isEmpty());
+
+    }
 
     @Test
     void when_return_user_list() throws Exception {

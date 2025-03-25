@@ -10,6 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -358,4 +362,68 @@ public class UserServiceTest {
 
     }
 
+    @Test
+    void when_get_users_returns_mapped_page() {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<UserEntity> userEntities = List.of(
+                UserEntity.builder().name(USER_DEFAULT_NAME).email(USER_DEFAULT_EMAIL).build(),
+                UserEntity.builder().name("Maria Silva").email("maria@gmail.com").build()
+        );
+        Page<UserEntity> userEntityPage = new PageImpl<>(userEntities, pageable, userEntities.size());
+
+        when(repository.findAll(pageable)).thenReturn(userEntityPage);
+
+        Page<ResponseUserDTO> responseUserDTOPage = service.getUsers(pageable);
+
+        assertNotNull(responseUserDTOPage);
+        assertEquals(userEntityPage.getTotalElements(), responseUserDTOPage.getTotalElements());
+        assertEquals(userEntityPage.getTotalPages(), responseUserDTOPage.getTotalPages());
+        assertEquals(userEntityPage.getNumber(), responseUserDTOPage.getNumber());
+        assertEquals(userEntityPage.getSize(), responseUserDTOPage.getSize());
+        assertEquals(userEntities.get(0).getName(), responseUserDTOPage.getContent().get(0).getName());
+        assertEquals(userEntities.get(0).getEmail(), responseUserDTOPage.getContent().get(0).getEmail());
+        assertEquals(userEntities.get(1).getName(), responseUserDTOPage.getContent().get(1).getName());
+        assertEquals(userEntities.get(1).getEmail(), responseUserDTOPage.getContent().get(1).getEmail());
+    }
+
+    @Test
+    void when_get_users_repository_returns_empty_page() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<UserEntity> emptyUserEntityPage = Page.empty(pageable);
+
+        when(repository.findAll(pageable)).thenReturn(emptyUserEntityPage);
+
+        Page<ResponseUserDTO> responseUserDTOPage = service.getUsers(pageable);
+
+        assertNotNull(responseUserDTOPage);
+        assertEquals(0, responseUserDTOPage.getTotalElements());
+        assertEquals(1, responseUserDTOPage.getTotalPages());
+        assertEquals(0, responseUserDTOPage.getNumber());
+        assertEquals(10, responseUserDTOPage.getSize());
+        assertEquals(0, responseUserDTOPage.getContent().size());
+    }
+
+    @Test
+    void when_get_users_repository_returns_page_with_null_values() {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<UserEntity> userEntitiesWithNulls = List.of(
+                UserEntity.builder().name(null).email(USER_DEFAULT_EMAIL).build(),
+                UserEntity.builder().name(USER_DEFAULT_NAME).email(null).build()
+        );
+        Page<UserEntity> userEntityPageWithNulls = new PageImpl<>(userEntitiesWithNulls, pageable, userEntitiesWithNulls.size());
+
+        when(repository.findAll(pageable)).thenReturn(userEntityPageWithNulls);
+
+        Page<ResponseUserDTO> responseUserDTOPage = service.getUsers(pageable);
+
+        assertNotNull(responseUserDTOPage);
+        assertEquals(userEntityPageWithNulls.getTotalElements(), responseUserDTOPage.getTotalElements());
+        assertEquals(userEntityPageWithNulls.getTotalPages(), responseUserDTOPage.getTotalPages());
+        assertEquals(userEntityPageWithNulls.getNumber(), responseUserDTOPage.getNumber());
+        assertEquals(userEntityPageWithNulls.getSize(), responseUserDTOPage.getSize());
+        assertEquals(userEntitiesWithNulls.get(0).getName(), responseUserDTOPage.getContent().get(0).getName());
+        assertEquals(userEntitiesWithNulls.get(0).getEmail(), responseUserDTOPage.getContent().get(0).getEmail());
+        assertEquals(userEntitiesWithNulls.get(1).getName(), responseUserDTOPage.getContent().get(1).getName());
+        assertEquals(userEntitiesWithNulls.get(1).getEmail(), responseUserDTOPage.getContent().get(1).getEmail());
+    }
 }

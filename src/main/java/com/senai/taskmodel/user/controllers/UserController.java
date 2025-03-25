@@ -19,21 +19,24 @@ public class UserController {
     @Autowired
     UserService service;
 
-    @GetMapping
+    @GetMapping("/pagination")
     public ResponseEntity<Page<ResponseUserDTO>> getAllUsers(Pageable pageable) {
         Page<ResponseUserDTO> pageUserDTO = service.getUsers(pageable);
+        if(pageUserDTO.isEmpty()) {
+            return ResponseEntity.status(404).body(pageUserDTO);
+        }
         return ResponseEntity.ok().body(pageUserDTO);
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<ResponseUserDTO>> listAllUsers() {
-//        List<ResponseUserDTO> listUsers = service.findAllUsers();
-//
-//        if(listUsers.isEmpty()) {
-//            return ResponseEntity.status(404).body(listUsers);
-//        }
-//        return ResponseEntity.ok().body(listUsers);
-//    }
+    @GetMapping
+    public ResponseEntity<List<ResponseUserDTO>> listAllUsers() {
+        List<ResponseUserDTO> listUsers = service.findAllUsers();
+
+        if(listUsers.isEmpty()) {
+            return ResponseEntity.status(404).body(listUsers);
+        }
+        return ResponseEntity.ok().body(listUsers);
+    }
 
     @GetMapping("/{email}")
     public ResponseEntity<ResponseUserDTO> findUserByEmail(@PathVariable String email) {

@@ -1,4 +1,5 @@
 create database taskmodel_db_v1;
+user taskmodel_db_v1;
 drop database taskmodel_db_v1;
 
 desc tb_user;

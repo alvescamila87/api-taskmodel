@@ -27,7 +27,6 @@ public class UserService {
     public Page<ResponseUserDTO> getUsers(Pageable pageable) {
         Page<UserEntity> userEntityPage = repository.findAll(pageable);
         return userEntityPage.map(ResponseUserDTO::convertToDTO);
-
     }
 
     public List<ResponseUserDTO> findAllUsers() {
