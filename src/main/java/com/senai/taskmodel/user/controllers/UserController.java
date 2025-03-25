@@ -25,15 +25,15 @@ public class UserController {
         return ResponseEntity.ok().body(pageUserDTO);
     }
 
-    @GetMapping
-    public ResponseEntity<List<ResponseUserDTO>> listAllUsers() {
-        List<ResponseUserDTO> listUsers = service.findAllUsers();
-
-        if(listUsers.isEmpty()) {
-            return ResponseEntity.status(404).body(listUsers);
-        }
-        return ResponseEntity.ok().body(listUsers);
-    }
+//    @GetMapping
+//    public ResponseEntity<List<ResponseUserDTO>> listAllUsers() {
+//        List<ResponseUserDTO> listUsers = service.findAllUsers();
+//
+//        if(listUsers.isEmpty()) {
+//            return ResponseEntity.status(404).body(listUsers);
+//        }
+//        return ResponseEntity.ok().body(listUsers);
+//    }
 
     @GetMapping("/{email}")
     public ResponseEntity<ResponseUserDTO> findUserByEmail(@PathVariable String email) {
