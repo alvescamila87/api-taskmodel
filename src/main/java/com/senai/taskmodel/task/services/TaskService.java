@@ -7,6 +7,8 @@ import com.senai.taskmodel.task.repositories.TaskRepository;
 import com.senai.taskmodel.user.entities.UserEntity;
 import com.senai.taskmodel.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +23,11 @@ public class TaskService {
 
     @Autowired
     UserRepository userRepository;
+
+    public Page<ResponseTaskDTO> getAllTasks(Pageable pageable) {
+        Page<TaskEntity> taskEntityPage = repository.findAll(pageable);
+        return taskEntityPage.map(ResponseTaskDTO::convertToDTO);
+    }
 
     public List<ResponseTaskDTO> findAllTasks() {
         List<ResponseTaskDTO> listAllTasks = new ArrayList<>();

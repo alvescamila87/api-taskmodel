@@ -2,6 +2,7 @@ package com.senai.taskmodel.task.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.senai.taskmodel.task.entities.TaskEntity;
 import com.senai.taskmodel.task.enums.EnumStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -42,4 +43,16 @@ public class ResponseTaskDTO {
 
     @JsonIgnore
     private Boolean success;
+
+    public static ResponseTaskDTO convertToDTO(TaskEntity taskEntity) {
+        return ResponseTaskDTO
+                .builder()
+                .id(taskEntity.getId())
+                .title(taskEntity.getTitle())
+                .description(taskEntity.getDescription())
+                .dateTask(taskEntity.getDateTask())
+                .status(taskEntity.getStatus())
+                .userEmail(taskEntity.getUser().getEmail())
+                .build();
+    }
 }
