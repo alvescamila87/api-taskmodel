@@ -12,8 +12,8 @@ It aims to create an application to manage tasks using **Java Spring Boot** e **
 - **H2 Database**
 
 ## 📂 Features
-- Create, update, list and delete tasks.
-- Organize and manage tasks by status (pending, in progress, cancelled and concluded).
+- Create, update, list, delete and paginate tasks.
+- Organize and manage tasks by status (open, pending, in progress, cancelled and concluded).
 - Data persistence with MariaDB.
 - Unit testing with JUnit and Mockito
 - Environment-based database configurations.
