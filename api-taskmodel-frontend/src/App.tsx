@@ -1,8 +1,8 @@
+import { UserList } from "./pages/UserList/UserList";
+
 function App() {
   return (
-    <>
-      <h1>Hello World</h1>
-    </>
+      <UserList />
   );
 }
 
