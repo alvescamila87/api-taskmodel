@@ -1,4 +1,13 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
+import {
+  CircularProgress,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { useUserList } from "./useUserList";
 import { User } from "../../services/userService/types";
 
@@ -17,18 +26,17 @@ import { User } from "../../services/userService/types";
 //   createData(3, 'João Batista', "joao@gmail.com"),
 // ];
 
-
 export const UserList = () => {
+  const { userData, loading } = useUserList();
 
-    const { 
-        userData,
-    } = useUserList();
-
-    return (
-        <TableContainer 
-        component={Paper}
-        sx={{ maxWidth: 800, margin: "auto", mt: 5, p: 2 }}
-        >
+  return (
+    <TableContainer
+      component={Paper}
+      sx={{ maxWidth: 800, margin: "auto", mt: 5, p: 2 }}
+    >
+      {loading ? (
+        <CircularProgress sx={{ display: "block", margin: "auto", mt: 3 }} />
+      ) : (
         <Table>
           <TableHead>
             <TableRow>
@@ -38,18 +46,24 @@ export const UserList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {userData?.data?.map((user: User) => (
-              <TableRow
-                key={user.email}
-              >
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.email}</TableCell>
-                <TableCell>View, Update, Delete</TableCell>
+            {userData.data.length > 0 ? (
+              userData?.data?.map((user: User) => (
+                <TableRow key={user.email}>
+                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>View, Update, Delete</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={3} align="center">
+                  Nenhum usuário encontrado.
+                </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
-      </TableContainer>
-    )
-}
-   
+      )}
+    </TableContainer>
+  );
+};

@@ -8,21 +8,44 @@ const INITIAL_STATE_DATA = {
 
 export const useUserList = () => {
   const [userData, setUserData] = useState(INITIAL_STATE_DATA);
-
-  const { findAll } = userService();
+  const [userEmail, setUserEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { findAll, findUserByEmail } = userService();
 
   async function fetchList() {
-
+    setLoading(true);
     try {
       const response = await findAll();
-      //console.log("RESPONSE ", response)
       setUserData({
         data: response as User[],
       });
+      setLoading(false)
     } catch (error) {
       console.error("Error to fetch users list:", error);
     }
   }
+
+  async function fetchUserByEmail(email: string) {
+    console.log("Email: ", email)
+    if(!email) {
+      fetchList();
+      return;
+    }
+
+    setLoading(true);
+    try { 
+        const response = await findUserByEmail(email);
+        setUserData(response ?? {});
+        setLoading(false);
+    } catch (error) {
+        console.error("Error to fecth user by user email", error)
+        throw error;
+    }
+}
+
+const handleSearchUser = (email: string) =>  {
+    fetchUserByEmail(email);
+}
 
   useEffect(() => {
     fetchList();
@@ -30,6 +53,10 @@ export const useUserList = () => {
 
   return {
     userData,
+    loading,
+    userEmail,
+    setUserEmail,
     setUserData,
+    handleSearchUser
   }
 };

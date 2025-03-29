@@ -1,11 +1,7 @@
-import { SearchUser } from "./SearchUser/SearchUser"
-import { UserList } from "./UserList/UserList"
+import { UserPage } from "./UserPage"
 
 export const Taskmodel = () => {
-    return (
-        <>
-            <SearchUser />
-            <UserList />
-        </>        
+    return (        
+     <UserPage/>                
     )
 }
