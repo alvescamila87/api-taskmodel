@@ -1,8 +1,8 @@
-import { UserList } from "./pages/UserList/UserList";
+import { Taskmodel } from "./pages";
 
 function App() {
   return (
-      <UserList />
+      <Taskmodel />
   );
 }
 

@@ -1,6 +1,6 @@
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
 import { useUserList } from "./useUserList";
-import { User } from "../../services/types";
+import { User } from "../../services/userService/types";
 
 // mockar dados
 // function createData(
