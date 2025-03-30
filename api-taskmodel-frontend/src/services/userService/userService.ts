@@ -26,9 +26,7 @@ export const userService = () => {
 
   async function upsert(data: User) {
     try {
-      const response = await axios.post(BASE_PATH, {
-        data,
-      });
+      const response = await axios.post(BASE_PATH, data);
       return response.data ?? {};
     } catch (error) {
       console.log("Error to create user service", error);

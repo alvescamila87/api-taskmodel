@@ -8,9 +8,12 @@ export const UserPage = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        gap: 4,
         alignItems: "center",
-        width: { xs: "100%", sm: "80%", md: "60%" },
+        justifyContent: "center",
+        width: "100%",
+        minHeight: "100vh",
+        paddingTop: { xs: "60px", sm: "80px" },
+        px: { xs: 2, sm: 4 },
       }}
     >
       <UserSearch />
