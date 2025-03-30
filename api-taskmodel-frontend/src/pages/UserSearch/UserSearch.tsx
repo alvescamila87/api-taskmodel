@@ -9,7 +9,7 @@ export const UserSearch = () => {
     <Box
       sx={{
         margin: "auto",
-        width: 800,
+        width: "100%",
         p: 2,
         border: "1px solid grey",
         display: "flex",
@@ -27,7 +27,7 @@ export const UserSearch = () => {
       />
       <Button
         variant="contained"
-        size="small"
+        size="large"
         startIcon={<GridSearchIcon />}
         onClick={() => handleSearchUser(userEmail)}
       >

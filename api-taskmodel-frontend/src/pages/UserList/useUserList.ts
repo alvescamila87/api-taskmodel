@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { userService } from "../../services/userService/userService";
 import { User } from "../../services/userService/types";
+import { userService } from "../../services/userService/userService";
 
 const INITIAL_STATE_DATA = {
-  data: [] as User[]
+  data: [] as User[],
 };
 
 export const useUserList = () => {
@@ -14,38 +14,43 @@ export const useUserList = () => {
 
   async function fetchList() {
     setLoading(true);
-    try {
-      const response = await findAll();
-      setUserData({
-        data: response as User[],
-      });
-      setLoading(false)
-    } catch (error) {
-      console.error("Error to fetch users list:", error);
-    }
+    setTimeout(async () => {
+      try {
+        const response = await findAll();
+        setUserData({
+          data: response as User[],
+        });
+        setLoading(false);
+      } catch (error) {
+        console.error("Error to fetch users list:", error);
+      }
+    }, 500);
   }
 
   async function fetchUserByEmail(email: string) {
-    console.log("Email: ", email)
-    if(!email) {
+    console.log("Email: ", email);
+    if (!email) {
       fetchList();
       return;
     }
 
     setLoading(true);
-    try { 
-        const response = await findUserByEmail(email);
-        setUserData(response ?? {});
-        setLoading(false);
+    try {
+      const response = await findUserByEmail(email);
+      console.log("USER BY ID: ", response);
+      setUserData({
+        data: response ?? {},
+      });
+      setLoading(false);
     } catch (error) {
-        console.error("Error to fecth user by user email", error)
-        throw error;
+      console.error("Error to fecth user by user email", error);
+      throw error;
     }
-}
+  }
 
-const handleSearchUser = (email: string) =>  {
+  const handleSearchUser = (email: string) => {
     fetchUserByEmail(email);
-}
+  };
 
   useEffect(() => {
     fetchList();
@@ -57,6 +62,6 @@ const handleSearchUser = (email: string) =>  {
     userEmail,
     setUserEmail,
     setUserData,
-    handleSearchUser
-  }
+    handleSearchUser,
+  };
 };

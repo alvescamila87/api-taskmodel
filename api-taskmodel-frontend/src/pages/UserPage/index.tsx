@@ -1,12 +1,20 @@
 import { Box } from "@mui/material";
-import { UserSearch } from "../UserSearch/UserSearch";
 import { UserList } from "../UserList/UserList";
+import { UserSearch } from "../UserSearch/UserSearch";
 
 export const UserPage = () => {
-    return (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-            <UserSearch />
-            <UserList />
-        </Box>
-    );
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 4,
+        alignItems: "center",
+        width: { xs: "100%", sm: "80%", md: "60%" },
+      }}
+    >
+      <UserSearch />
+      <UserList />
+    </Box>
+  );
 };

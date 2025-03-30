@@ -8,8 +8,8 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useUserList } from "./useUserList";
 import { User } from "../../services/userService/types";
+import { useUserList } from "./useUserList";
 
 // mockar dados
 // function createData(
@@ -32,7 +32,12 @@ export const UserList = () => {
   return (
     <TableContainer
       component={Paper}
-      sx={{ maxWidth: 800, margin: "auto", mt: 5, p: 2 }}
+      sx={{
+        width: "100%",
+        margin: "auto",
+        mt: 5,
+        p: 2,
+      }}
     >
       {loading ? (
         <CircularProgress sx={{ display: "block", margin: "auto", mt: 3 }} />
@@ -46,7 +51,7 @@ export const UserList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {userData.data.length > 0 ? (
+            {userData?.data?.length > 0 ? (
               userData?.data?.map((user: User) => (
                 <TableRow key={user.email}>
                   <TableCell>{user.name}</TableCell>
