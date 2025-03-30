@@ -6,7 +6,7 @@ export const Menu = () => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Taskmodel app
+          Taskmodel system
         </Typography>
         <Box>
           <Button component={Link} to="/users" color="inherit">
