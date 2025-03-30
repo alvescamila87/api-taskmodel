@@ -141,12 +141,17 @@ public class TaskService {
                     .build();
         }
 
-        if(hasTaskTheSameDate(taskDTO)) {
-            return ResponseTaskDTO
-                    .builder()
-                    .mensagem("There is another task on the same date")
-                    .success(false)
-                    .build();
+        Optional<TaskEntity> taskEntityTheSameDate = repository.findByDateTaskAndUserEmail(taskDTO.getDateTask(), taskDTO.getUserEmail());
+
+        if(taskEntityTheSameDate.isPresent()) {
+
+            if (hasTaskTheSameDate(taskDTO) && !taskEntityTheSameDate.get().getId().equals(id)) {
+                return ResponseTaskDTO
+                        .builder()
+                        .mensagem("There is another task on the same date")
+                        .success(false)
+                        .build();
+            }
         }
 
         TaskEntity updateTaskEntity = updateTaskEntityById.get();
@@ -192,8 +197,8 @@ public class TaskService {
 
 
     private Boolean hasTaskTheSameDate(TaskDTO taskDTO) {
-        List<TaskEntity> listTaskEntity = repository.findByDateTaskAndUserEmail(taskDTO.getDateTask(), taskDTO.getUserEmail());
+        Optional<TaskEntity> listTaskEntity = repository.findByDateTaskAndUserEmail(taskDTO.getDateTask(), taskDTO.getUserEmail());
 
-        return !listTaskEntity.isEmpty();
+        return listTaskEntity.isPresent();
     }
 }

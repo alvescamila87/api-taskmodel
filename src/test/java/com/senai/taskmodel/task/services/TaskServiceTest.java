@@ -8,6 +8,7 @@ import com.senai.taskmodel.task.repositories.TaskRepository;
 import com.senai.taskmodel.user.dtos.UserDTO;
 import com.senai.taskmodel.user.entities.UserEntity;
 import com.senai.taskmodel.user.repositories.UserRepository;
+import com.senai.taskmodel.user.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -34,6 +35,10 @@ public class TaskServiceTest {
 
     @InjectMocks
     TaskService service;
+
+    @Mock
+    UserService userService;
+
 
     private final Long TASK_DEFAULT_ID = 1L;
     private final String TASK_DEFAULT_NAME = "João Batista";
@@ -97,6 +102,9 @@ public class TaskServiceTest {
 
     }
 
+    /**
+     * TO-DO: IN PROGRESS
+     */
     @Test
     void when_create_task_then_return_task_success() {
         UserEntity userEntity = UserEntity
@@ -116,7 +124,6 @@ public class TaskServiceTest {
                 .userEmail(userEntity.getEmail())
                 .build();
 
-        when(userRepository.findByEmail(newTaskDTO.getUserEmail())).thenReturn(Optional.of(userEntity));
 
         TaskEntity newTaskEntity = TaskEntity
                 .builder()
@@ -141,9 +148,9 @@ public class TaskServiceTest {
         assertEquals("Task has been created", newTaskResponseDTO.getMensagem());
         assertTrue(newTaskResponseDTO.getSuccess());
 
-        //verify(repository, times(1)).save(any(TaskEntity.class));
-        //verify(userRepository, times(1)).findByEmail(TASK_DEFAULT_USER_EMAIL);
-        verify(service, times(1)).createTask(newTaskDTO);
+
+        verify(repository, times(1)).save(any(TaskEntity.class));
+        verify(userRepository, times(1)).findByEmail(TASK_DEFAULT_USER_EMAIL);
 
 
 

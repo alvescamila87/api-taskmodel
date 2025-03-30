@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -125,15 +126,17 @@ public class TaskRepositoryTest {
 
         TaskEntity newTask = repository.save(taskEntity);
 
-        List<TaskEntity> listTask = repository.findByDateTaskAndUserEmail(TASK_DEFAULT_TASK_DATE, TASK_DEFAULT_USER_EMAIL);
-
+        Optional<TaskEntity> listTask = repository.findByDateTaskAndUserEmail(TASK_DEFAULT_TASK_DATE, TASK_DEFAULT_USER_EMAIL);
         assertNotNull(listTask);
-        assertEquals(1, listTask.size());
-        assertEquals(TASK_DEFAULT_TITLE, newTask.getTitle());
-        assertEquals(TASK_DEFAULT_DESCRIPTION, newTask.getDescription());
-        assertEquals(TASK_DEFAULT_STATUS, newTask.getStatus());
-        assertEquals(TASK_DEFAULT_TASK_DATE, newTask.getDateTask());
-        assertEquals(userEntity, newTask.getUser());
+        assertTrue(listTask.isPresent());
+
+        TaskEntity taskFromOptional = listTask.get();
+
+        assertEquals(TASK_DEFAULT_TITLE, taskFromOptional.getTitle());
+        assertEquals(TASK_DEFAULT_DESCRIPTION, taskFromOptional.getDescription());
+        assertEquals(TASK_DEFAULT_STATUS, taskFromOptional.getStatus());
+        assertEquals(TASK_DEFAULT_TASK_DATE, taskFromOptional.getDateTask());
+        assertEquals(userEntity, taskFromOptional.getUser());
     }
 
     @Test
@@ -146,10 +149,9 @@ public class TaskRepositoryTest {
 
         userRepository.save(userEntity);
 
-        List<TaskEntity> listTask = repository.findByDateTaskAndUserEmail(TASK_DEFAULT_TASK_DATE, TASK_DEFAULT_USER_EMAIL);
-
+        Optional<TaskEntity> listTask = repository.findByDateTaskAndUserEmail(TASK_DEFAULT_TASK_DATE, TASK_DEFAULT_USER_EMAIL);
         assertNotNull(listTask);
-        assertEquals(0, listTask.size());
+        assertTrue(listTask.isEmpty());
     }
 
 }
