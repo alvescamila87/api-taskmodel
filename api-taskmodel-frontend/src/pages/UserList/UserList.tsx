@@ -1,5 +1,6 @@
 import {
   CircularProgress,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -56,7 +57,26 @@ export const UserList = () => {
                 <TableRow key={user.email}>
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
-                  <TableCell>View, Update, Delete</TableCell>
+                  <TableCell align="center">
+                    <IconButton
+                      color="primary"
+                      //onClick={() => handleView(user)}
+                    >
+                      <Visibility />
+                    </IconButton>
+                    <IconButton
+                      color="secondary"
+                      //onClick={() => handleEdit(user)}
+                    >
+                      <Edit />
+                    </IconButton>
+                    <IconButton
+                      color="error"
+                      //onClick={() => handleDelete(user)}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               ))
             ) : (

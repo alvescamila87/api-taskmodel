@@ -8,6 +8,7 @@ export const Menu = () => {
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Taskmodel system
         </Typography>
+        <Typography variant="h6" sx={{ flexGrow: 1 }}></Typography>
         <Box>
           <Button component={Link} to="/users" color="inherit">
             User list
