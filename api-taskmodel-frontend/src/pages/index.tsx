@@ -8,8 +8,8 @@ export const Taskmodel = () => {
     <>
       <Menu />
       <Routes>
-        <Route path="/" element={<UserPage />} />{" "}
-        <Route path="/users" element={<UserPage />} />
+        <Route path="/" element={<UserPage />} />
+        <Route path="/list" element={<UserPage />} />
         <Route path="/add-user" element={<UserAdd />} />
       </Routes>
     </>

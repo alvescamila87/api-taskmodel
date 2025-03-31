@@ -43,7 +43,6 @@ export const UserList = () => {
         mt: 4,
       }}
     >
-      {/* Título da lista */}
       <Typography variant="h5" fontWeight="bold" textAlign="center" mb={2}>
         User list
       </Typography>

@@ -1,9 +1,26 @@
 import { Cancel, Save } from "@mui/icons-material";
-import { Alert, Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  Snackbar,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useUserAdd } from "./useUserAdd";
 
 export const UserAdd = () => {
-  const { formik, message, handleCancel } = useUserAdd();
+  const {
+    formik,
+
+    openSnackbar,
+    setOpenSnackbar,
+    message,
+    severity,
+    handleShowToastMessage,
+
+    handleCancel,
+  } = useUserAdd();
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box
@@ -24,15 +41,6 @@ export const UserAdd = () => {
         <Typography variant="h5" fontWeight="bold" textAlign="center">
           Add user filling de form
         </Typography>
-
-        {message && (
-          <Alert
-            sx={{ width: "100%", mb: 2 }}
-            severity={message.includes("success") ? "success" : "error"}
-          >
-            {message}
-          </Alert>
-        )}
 
         <TextField
           label="Name"
@@ -68,7 +76,7 @@ export const UserAdd = () => {
             variant="outlined"
             color="info"
             startIcon={<Cancel />}
-            onClick={() => handleCancel}
+            onClick={() => handleCancel()}
           >
             Cancel
           </Button>
@@ -77,11 +85,25 @@ export const UserAdd = () => {
             variant="contained"
             color="primary"
             startIcon={<Save />}
+            disabled={!formik.values.name || !formik.values.email}
+            onClick={() =>
+              handleShowToastMessage("User saved successfully", "success")
+            }
           >
             Save
           </Button>
         </Box>
       </Box>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenSnackbar(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert severity={severity} sx={{ width: "100%" }}>
+          {message}
+        </Alert>
+      </Snackbar>
     </form>
   );
 };

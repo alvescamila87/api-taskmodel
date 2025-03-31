@@ -18,7 +18,9 @@ export const useUserAdd = () => {
   const { upsert } = userService();
 
   const [userData, setUserData] = useState<User | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<string>("");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [severity, setSeverity] = useState<"success" | "error">("success");
 
   const formik = useFormik({
     initialValues: INITIAL_VALUES_USER,
@@ -34,9 +36,18 @@ export const useUserAdd = () => {
       resetForm();
     } catch (error) {
       console.error("Error to create user", error);
-      setMessage("Error to create user");
+      handleShowToastMessage("Error to create user", "error");
     }
   }
+
+  const handleShowToastMessage = (
+    message: string,
+    severity: "success" | "error"
+  ) => {
+    setMessage(message);
+    setSeverity(severity);
+    setOpenSnackbar(true);
+  };
 
   const handleCancel = () => {
     formik.resetForm();
@@ -44,7 +55,13 @@ export const useUserAdd = () => {
 
   return {
     formik,
+
+    openSnackbar,
+    setOpenSnackbar,
     message,
+    severity,
+    handleShowToastMessage,
+
     handleCancel,
   };
 };

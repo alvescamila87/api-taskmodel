@@ -10,7 +10,7 @@ export const Menu = () => {
         </Typography>
         <Typography variant="h6" sx={{ flexGrow: 1 }}></Typography>
         <Box>
-          <Button component={Link} to="/users" color="inherit">
+          <Button component={Link} to="/list" color="inherit">
             User list
           </Button>
           <Button component={Link} to="/add-user" color="inherit">
