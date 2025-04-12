@@ -32,7 +32,7 @@ export const useUserAdd = () => {
     try {
       const response = await upsert(userData);
       setUserData(response);
-      setMessage("User has been save");
+      setMessage("User has been saved");
       resetForm();
     } catch (error) {
       console.error("Error to create user", error);
