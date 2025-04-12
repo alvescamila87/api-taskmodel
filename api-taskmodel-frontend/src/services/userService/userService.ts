@@ -39,9 +39,19 @@ export const userService = () => {
     }
   }
 
+  async function deleteUser(email: string) {
+    try {
+      return await axios.delete(`${BASE_PATH}/${email}`);
+    } catch (error) {
+      console.log("Error to fetch user by email service", error);
+      throw error;
+    }
+  }
+
   return {
     findAll,
     findUserByEmail,
     upsert,
+    deleteUser,
   };
 };

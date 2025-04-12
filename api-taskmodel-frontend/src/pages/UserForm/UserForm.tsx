@@ -7,9 +7,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useUserAdd } from "./useUserAdd";
+import { useUserForm, UseUserFormProps } from "./useUserForm";
 
-export const UserAdd = () => {
+export const UserForm = ({ initialValues, onSuccess }: UseUserFormProps) => {
   const {
     formik,
 
@@ -17,10 +17,11 @@ export const UserAdd = () => {
     setOpenSnackbar,
     message,
     severity,
-    handleShowToastMessage,
+    //handleShowToastMessage,
 
     handleCancel,
-  } = useUserAdd();
+  } = useUserForm({ initialValues, onSuccess });
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box
@@ -86,9 +87,9 @@ export const UserAdd = () => {
             color="primary"
             startIcon={<Save />}
             disabled={!formik.values.name || !formik.values.email}
-            onClick={() =>
-              handleShowToastMessage("User saved successfully", "success")
-            }
+            // onClick={() =>
+            //   handleShowToastMessage("User saved successfully", "success")
+            // }
           >
             Save
           </Button>

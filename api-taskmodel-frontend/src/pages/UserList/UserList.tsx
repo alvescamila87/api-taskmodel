@@ -1,9 +1,13 @@
 import { Delete, Edit, Visibility } from "@mui/icons-material";
 import {
+  Alert,
   Box,
+  Button,
   CircularProgress,
   IconButton,
+  Modal,
   Paper,
+  Snackbar,
   Table,
   TableBody,
   TableCell,
@@ -13,6 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 import { User } from "../../services/userService/types";
+import { UserForm } from "../UserForm/UserForm";
 import { useUserList } from "./useUserList";
 
 // mockar dados
@@ -31,7 +36,26 @@ import { useUserList } from "./useUserList";
 // ];
 
 export const UserList = () => {
-  const { userData, loading } = useUserList();
+  const {
+    userData,
+    loading,
+
+    editUser,
+    isEditModalOpen,
+    handleOpenEditModal,
+    handleCloseEditModal,
+    handleEditSuccess,
+
+    userToDelete,
+    isDeleteModalOpen,
+    handleOpenDeleteModal,
+    handleCloseDeleteModal,
+    openDeleteSnackbar,
+    messageDelete,
+    severityDelete,
+    setOpenDeleteSnackbar,
+    confirmDeleteUserByEmail,
+  } = useUserList();
 
   return (
     <Box
@@ -84,10 +108,16 @@ export const UserList = () => {
                       <IconButton color="primary">
                         <Visibility />
                       </IconButton>
-                      <IconButton color="secondary">
+                      <IconButton
+                        color="secondary"
+                        onClick={() => handleOpenEditModal(user)}
+                      >
                         <Edit />
                       </IconButton>
-                      <IconButton color="error">
+                      <IconButton
+                        color="error"
+                        onClick={() => handleOpenDeleteModal(user.email!)}
+                      >
                         <Delete />
                       </IconButton>
                     </TableCell>
@@ -96,7 +126,7 @@ export const UserList = () => {
               ) : (
                 <TableRow>
                   <TableCell colSpan={3} align="center">
-                    Nenhum usuário encontrado.
+                    There is no user found.
                   </TableCell>
                 </TableRow>
               )}
@@ -104,6 +134,90 @@ export const UserList = () => {
           </Table>
         )}
       </TableContainer>
+
+      <Modal open={isEditModalOpen} onClose={handleCloseEditModal}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            borderRadius: 2,
+            p: 4,
+            width: { xs: "90%", sm: "70%", md: "50%" },
+          }}
+        >
+          <UserForm initialValues={editUser} onSuccess={handleEditSuccess} />
+        </Box>
+      </Modal>
+
+      <Snackbar
+        open={openDeleteSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setOpenDeleteSnackbar(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert
+          onClose={() => setOpenDeleteSnackbar(false)}
+          severity={severityDelete}
+          sx={{ width: "100%" }}
+        >
+          {messageDelete}
+        </Alert>
+      </Snackbar>
+
+      <Modal
+        open={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        aria-labelledby="delete-confirmation-title"
+        aria-describedby="delete-confirmation-description"
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            borderRadius: 2,
+            p: 4,
+          }}
+        >
+          <Typography
+            id="delete-confirmation-title"
+            variant="h6"
+            component="h2"
+          >
+            Confirm delete
+          </Typography>
+          <Typography id="delete-confirmation-description" sx={{ mt: 2 }}>
+            Are you sure you want to delete: <strong>{userToDelete}</strong>?
+          </Typography>
+          <Box
+            sx={{ mt: 2, display: "flex", justifyContent: "flex-end", gap: 2 }}
+          >
+            <Button onClick={handleCloseDeleteModal} color="primary">
+              Cancel
+            </Button>
+            <Button
+              onClick={() => {
+                if (userToDelete) {
+                  confirmDeleteUserByEmail(userToDelete);
+                }
+              }}
+              color="error"
+              autoFocus
+              disabled={loading}
+            >
+              Delete
+              {loading && <CircularProgress size={20} sx={{ ml: 1 }} />}
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
     </Box>
   );
 };

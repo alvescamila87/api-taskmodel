@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { Menu } from "./Menu/Menu";
-import { UserAdd } from "./UserAdd/UserAdd";
+import { UserForm } from "./UserForm/UserForm";
 import { UserPage } from "./UserPage";
 
 export const Taskmodel = () => {
@@ -10,7 +10,7 @@ export const Taskmodel = () => {
       <Routes>
         <Route path="/" element={<UserPage />} />
         <Route path="/list" element={<UserPage />} />
-        <Route path="/add-user" element={<UserAdd />} />
+        <Route path="/add-user" element={<UserForm />} />
       </Routes>
     </>
   );
