@@ -17,6 +17,7 @@ import {
   Typography,
 } from "@mui/material";
 import { User } from "../../services/userService/types";
+import { UserDetailsView } from "../UserDetailsView/UserDetailsView";
 import { UserForm } from "../UserForm/UserForm";
 import { useUserList } from "./useUserList";
 
@@ -39,6 +40,11 @@ export const UserList = () => {
   const {
     userData,
     loading,
+
+    viewUser,
+    isViewModalOpen,
+    handleOpenViewModal,
+    handleCloseViewModal,
 
     editUser,
     isEditModalOpen,
@@ -105,7 +111,10 @@ export const UserList = () => {
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell align="center">
-                      <IconButton color="primary">
+                      <IconButton
+                        color="primary"
+                        onClick={() => handleOpenViewModal(user)}
+                      >
                         <Visibility />
                       </IconButton>
                       <IconButton
@@ -134,6 +143,29 @@ export const UserList = () => {
           </Table>
         )}
       </TableContainer>
+
+      <Modal open={isViewModalOpen} onClose={handleCloseViewModal}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            borderRadius: 2,
+            p: 4,
+            width: { xs: "90%", sm: "70%", md: "50%" },
+          }}
+        >
+          {viewUser && <UserDetailsView user={viewUser} />}
+          <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
+            <Button onClick={handleCloseViewModal} color="primary">
+              Close
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
 
       <Modal open={isEditModalOpen} onClose={handleCloseEditModal}>
         <Box

@@ -10,7 +10,9 @@ export const useUserList = () => {
   const [userData, setUserData] = useState(INITIAL_STATE_DATA);
   const [userEmail, setUserEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [viewUser, setViewUser] = useState<User | null>(null);
   const [editUser, setEditUser] = useState<User | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<string | null>(null);
@@ -102,6 +104,16 @@ export const useUserList = () => {
     fetchUserByEmail(email);
   };
 
+  const handleOpenViewModal = (user: User) => {
+    setViewUser(user);
+    setIsViewModalOpen(true);
+  };
+
+  const handleCloseViewModal = () => {
+    setViewUser(null);
+    setIsViewModalOpen(false);
+  };
+
   const handleOpenEditModal = (user: User) => {
     setEditUser(user);
     setIsEditModalOpen(true);
@@ -138,6 +150,11 @@ export const useUserList = () => {
     setUserEmail,
     setUserData,
     handleSearchUser,
+
+    viewUser,
+    isViewModalOpen,
+    handleOpenViewModal,
+    handleCloseViewModal,
 
     editUser,
     isEditModalOpen,

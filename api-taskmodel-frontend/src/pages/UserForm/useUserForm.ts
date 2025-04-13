@@ -15,7 +15,7 @@ const schema = yup.object().shape({
 });
 
 export interface UseUserFormProps {
-  initialValues: User | null;
+  initialValues: User | null | undefined;
   onSuccess?: (message?: string) => void;
 }
 
