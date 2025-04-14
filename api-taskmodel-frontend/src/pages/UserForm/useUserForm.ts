@@ -5,6 +5,7 @@ import { User } from "../../services/userService/types";
 import { userService } from "../../services/userService/userService";
 
 const INITIAL_VALUES_USER = {
+  id: null,
   name: null,
   email: null,
 };
@@ -39,7 +40,7 @@ export const useUserForm = ({ initialValues, onSuccess }: UseUserFormProps) => {
     try {
       //const response = await upsert(values);
       await upsert(values);
-      setMessage(initialValues ? "User update" : "User create");
+      setMessage(values.id ? "User update" : "User create");
       setSeverity("success");
       setOpenSnackbar(true);
       resetForm();

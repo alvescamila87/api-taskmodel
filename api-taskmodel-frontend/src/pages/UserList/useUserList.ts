@@ -120,6 +120,7 @@ export const useUserList = () => {
   };
 
   const handleCloseEditModal = () => {
+    console.log("Cliquei para fechar");
     setEditUser(null);
     setIsEditModalOpen(false);
   };

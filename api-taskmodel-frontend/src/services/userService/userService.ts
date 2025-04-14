@@ -26,7 +26,7 @@ export const userService = () => {
 
   async function upsert(data: User) {
     try {
-      if (data?.email) {
+      if (data?.id && data?.email) {
         const response = await axios.put(`${BASE_PATH}/${data.email}`, data);
         return response.data ?? {};
       } else {

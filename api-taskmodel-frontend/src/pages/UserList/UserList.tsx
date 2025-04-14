@@ -94,6 +94,9 @@ export const UserList = () => {
             <TableHead>
               <TableRow>
                 <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>
+                  ID
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>
                   Name
                 </TableCell>
                 <TableCell sx={{ fontWeight: "bold", textAlign: "center" }}>
@@ -108,6 +111,7 @@ export const UserList = () => {
               {userData?.data?.length > 0 ? (
                 userData?.data?.map((user: User) => (
                   <TableRow key={user.email}>
+                    <TableCell>{user.id}</TableCell>
                     <TableCell>{user.name}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell align="center">
@@ -182,6 +186,11 @@ export const UserList = () => {
           }}
         >
           <UserForm initialValues={editUser} onSuccess={handleEditSuccess} />
+          <Box sx={{ mt: 2, display: "flex", justifyContent: "flex-end" }}>
+            <Button onClick={handleCloseEditModal} color="primary">
+              Close
+            </Button>
+          </Box>
         </Box>
       </Modal>
 
