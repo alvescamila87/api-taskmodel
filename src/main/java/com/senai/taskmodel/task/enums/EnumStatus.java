@@ -1,6 +1,7 @@
 package com.senai.taskmodel.task.enums;
 
-import com.fasterxml.jackson.annotation.JsonValue;@
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum EnumStatus {
     OPEN("Open"),
     IN_PROGRESS("In progress"),

@@ -1,6 +1,7 @@
 package com.senai.taskmodel.task.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.senai.taskmodel.task.entities.TaskEntity;
 import com.senai.taskmodel.task.enums.EnumStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -36,4 +37,16 @@ public class TaskDTO {
     @NotBlank(message = "The user email cannot be null")
     @Email(message = "The email provided is not valid")
     private String userEmail;
+
+    public TaskDTO of(TaskEntity taskEntity) {
+        return TaskDTO
+                .builder()
+                .id(taskEntity.getId())
+                .title(taskEntity.getTitle())
+                .description(taskEntity.getDescription())
+                .dateTask(taskEntity.getDateTask())
+                .status(taskEntity.getStatus())
+                .userEmail(taskEntity.getUser().getEmail())
+                .build();
+    }
 }
