@@ -18,7 +18,7 @@ public class UserDTO {
     @Email(message = "The email provided is not valid")
     private String email;
 
-    public static UserDTO convertToDTO(UserEntity userEntity) {
+    public static UserDTO of(UserEntity userEntity) {
         return UserDTO
                 .builder()
                 .name(userEntity.getName())
